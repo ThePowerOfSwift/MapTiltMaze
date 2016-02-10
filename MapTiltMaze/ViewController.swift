@@ -39,7 +39,33 @@ class ViewController: UIViewController, MKMapViewDelegate {
         annotation.coordinate = tappedCoordinate
         annotations.append(annotation)
         mapView.showAnnotations(annotations, animated: true)
+        drawPolyline()
         
+    }
+    
+    func drawPolyline() {
+        mapView.removeOverlays(mapView.overlays)
+        var coordinates:[CLLocationCoordinate2D] = [CLLocationCoordinate2D]()
+        for annotation in annotations {
+            coordinates.append(annotation.coordinate)
+        }
+        
+        let polyLine:MKPolyline = MKPolyline(coordinates: &coordinates, count: coordinates.count)
+
+        let padding:CGFloat = 50.0
+        let visibleMapRect = mapView.mapRectThatFits(polyLine.boundingMapRect, edgePadding: UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding))
+        mapView.setRegion(MKCoordinateRegionForMapRect(visibleMapRect), animated: true)
+
+        mapView.addOverlay(polyLine)
+    }
+    
+    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
+        let renderer = MKPolylineRenderer(overlay: overlay)
+        renderer.lineWidth = 3.0
+        renderer.strokeColor = UIColor.blueColor()
+        renderer.alpha = 0.5
+        
+        return renderer
     }
     
     func mapView(mapView: MKMapView, didAddAnnotationViews views: [MKAnnotationView]) {
