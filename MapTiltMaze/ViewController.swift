@@ -141,5 +141,10 @@ class ViewController: UIViewController, MKMapViewDelegate {
         return routeCoordinates
     }
 
+    func clearMap(){
+        mapView.removeOverlays(mapView.overlays)
+        mapView.removeAnnotations(annotations)
+        annotations.removeAll()
+    }
 }
 
