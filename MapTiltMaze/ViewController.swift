@@ -14,6 +14,7 @@ class ViewController: UIViewController, MKMapViewDelegate {
     var mapView:MKMapView!
     var annotations = [MKPointAnnotation]()
     var fullRoute = [CLLocationCoordinate2D]()
+    var userLocation:UserAnnotation!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,28 +26,21 @@ class ViewController: UIViewController, MKMapViewDelegate {
         let longPressRec:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "pinLocation:")
         longPressRec.minimumPressDuration = 0.5
         mapView.addGestureRecognizer(longPressRec)
-        
     }
 
     func pinLocation(sender:UILongPressGestureRecognizer){
         if sender.state != .Began {
             return
         }
-        
         let tappedPoint:CGPoint = sender.locationInView(mapView)
         let tappedCoordinate:CLLocationCoordinate2D = mapView.convertPoint(tappedPoint, toCoordinateFromView: mapView)
-        
         let annotation = MKPointAnnotation()
+        
         annotation.coordinate = tappedCoordinate
         annotations.append(annotation)
         mapView.showAnnotations(annotations, animated: true)
-        drawRoute()
         
-//        if annotations.count > 1 {
-//            let first = annotations.first!.coordinate
-//            let second = annotations.last!.coordinate
-//            drawDirection(first, endPoint: second)
-//        }
+        drawRoute()
         
     }
     
@@ -131,6 +125,9 @@ class ViewController: UIViewController, MKMapViewDelegate {
             let routeCoordinates:[CLLocationCoordinate2D] = self.getRouteCoordinates(route)
             self.fullRoute += routeCoordinates
             self.mapView.addOverlay(route.polyline, level: MKOverlayLevel.AboveRoads)
+            if self.fullRoute.count > 1 {
+                self.updateUserLocationTo(self.fullRoute.first!)
+            }
         }
     }
     
@@ -140,6 +137,45 @@ class ViewController: UIViewController, MKMapViewDelegate {
         route.polyline.getCoordinates(&routeCoordinates, range: NSMakeRange(0,pointCount))
         return routeCoordinates
     }
+    
+    func updateUserLocationTo(location:CLLocationCoordinate2D){
+        if userLocation == nil {
+            userLocation = UserAnnotation()
+        }
+        userLocation.imageName = "loc"
+        userLocation.coordinate = location
+        annotations.append(userLocation)
+        mapView.showAnnotations(annotations, animated: true)
+
+    }
+    
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+//        http://stackoverflow.com/questions/25631410/swift-different-images-for-annotation?rq=1
+        print("delegate called")
+        
+        if !(annotation is UserAnnotation) {
+            return nil
+        }
+        
+        let reuseId = "test"
+        
+        var anView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId)
+        if anView == nil {
+            anView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+            anView!.canShowCallout = true
+        }
+        else {
+            anView!.annotation = annotation
+        }
+        
+        //Set annotation-specific properties **AFTER**
+        //the view is dequeued or created...
+        
+        let cpa = annotation as! UserAnnotation
+        anView!.image = UIImage(named: cpa.imageName)
+        anView!.alpha = 0.5
+        return anView
+    }
 
     func clearMap(){
         mapView.removeOverlays(mapView.overlays)
@@ -148,3 +184,10 @@ class ViewController: UIViewController, MKMapViewDelegate {
     }
 }
 
+class UserAnnotation: MKPointAnnotation {
+    var imageName: String!
+    
+    override init() {
+        super.init()
+    }
+}
