@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, MKMapViewDelegate {
 
     var mapView:MKMapView!
     var annotations = [MKPointAnnotation]()
@@ -18,6 +18,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         mapView = MKMapView(frame: self.view.bounds)
+        mapView.delegate = self
         self.view.addSubview(mapView)
         
         let longPressRec:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "pinLocation:")
@@ -41,6 +42,14 @@ class ViewController: UIViewController {
         
     }
     
-
+    func mapView(mapView: MKMapView, didAddAnnotationViews views: [MKAnnotationView]) {
+        let annotationView = views[0]
+        let endFrame = annotationView.frame
+        annotationView.frame = CGRectOffset(endFrame, 0, -600)
+        
+        UIView.animateWithDuration(0.3) { () -> Void in
+            annotationView.frame = endFrame
+        }
+    }
 }
 
