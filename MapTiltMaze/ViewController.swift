@@ -14,6 +14,8 @@ class ViewController: UIViewController, MKMapViewDelegate {
 
     var mapView:MKMapView!
     var annotations = [MKPointAnnotation]()
+    var trailGraph: TrailGraph!
+    var prevNode:TrailNode!
     var fullRoute = [CLLocationCoordinate2D]()
     var userLocation:UserAnnotation!
     var motionManager:CMMotionManager!
@@ -125,14 +127,25 @@ class ViewController: UIViewController, MKMapViewDelegate {
             
             let route:MKRoute = routeResponse.routes[0]
             let routeCoordinates:[CLLocationCoordinate2D] = self.getRouteCoordinates(route)
-            self.fullRoute += routeCoordinates
+            
+            self.updateTrailGraph(routeCoordinates)
+            
             self.mapView.addOverlay(route.polyline, level: MKOverlayLevel.AboveRoads)
-            if self.fullRoute.count > 1 {
+            if self.trailGraph.nodes.count > 1 {
                 self.updateUserLocationTo(self.fullRoute.first!)
                 
                 self.motionManager = CMMotionManager()
                 self.motionManager.accelerometerUpdateInterval = 0.5
                 self.motionManager.gyroUpdateInterval = 0.5
+                self.motionManager.deviceMotionUpdateInterval = 0.5
+                
+//                self.motionManager.startDeviceMotionUpdatesToQueue(NSOperationQueue.currentQueue()!, withHandler: { (deviceMotion, error) -> Void in
+//                    if error == nil {
+//                        self.processDeviceMotionData(deviceMotion!.attitude)
+//                    } else {
+//                        print(error!)
+//                    }
+//                })
 
                 self.motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue()!, withHandler: { (accelerometerData, error) -> Void in
                     if error == nil {
@@ -153,6 +166,14 @@ class ViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
+    func processDeviceMotionData(attitude: CMAttitude){
+        let attRoll = attitude.roll
+        let attPitch = attitude.pitch
+//        let attYaw = attitude.yaw
+        print("attRoll: \(attRoll) | attPitch: \(attPitch)")
+//        print("attRoll: \(attRoll) | attPitch: \(attPitch) | attYaw: \(attYaw)")
+    }
+    
     func processAccelerationData(acceleration: CMAcceleration){
         let accX = acceleration.x
         let accY = acceleration.y
@@ -167,8 +188,13 @@ class ViewController: UIViewController, MKMapViewDelegate {
         let detectedSlope = getSlope(a: ((fullRoute[0].latitude) as Double,(fullRoute[0].longitude) as Double),
                                      b: (((fullRoute[0].latitude) as Double) + accX, ((fullRoute[0].longitude) as Double) + accY))
         print("detectedSlope: \(detectedSlope)")
-        
-        //if the 2 have same slopes within a degree of error then set progress forward to next position
+//
+//        //if the 2 have same slopes within a degree of error then set progress forward to next position
+//        let dx = acceleration.y * -50
+//        let dy =  acceleration.x * 50
+//        
+//        print("from fullRoute[0]")
+//        print(CGVector(dx: acceleration.y * -50, dy: acceleration.x * 50))
     }
     
     func getSlope(a a:(x:Double,y:Double), b:(x:Double,y:Double)) -> Double{
@@ -187,12 +213,48 @@ class ViewController: UIViewController, MKMapViewDelegate {
     func updateUserLocationTo(location:CLLocationCoordinate2D){
         if userLocation == nil {
             userLocation = UserAnnotation()
+            userLocation.imageName = "loc"
         }
-        userLocation.imageName = "loc"
+        if let index = annotations.indexOf(userLocation) {
+            annotations.removeAtIndex(index)
+        }
+
         userLocation.coordinate = location
         annotations.append(userLocation)
         mapView.showAnnotations(annotations, animated: true)
 
+    }
+    
+    func moveUserLocationTo(node: TrailNode){
+        updateUserLocationTo(node.location)
+    }
+    
+    func updateTrailGraph(coordinates: [CLLocationCoordinate2D]){
+        if trailGraph == nil {
+            trailGraph = TrailGraph()
+        }
+        
+        for coord in coordinates {
+            let trailNode = TrailNode()
+            trailNode.location = coord
+            trailNode.neighbors.append(prevNode)
+            
+            if trailGraph.nodes.count == 1 {
+                trailGraph.nodes.first!.neighbors.append(prevNode)
+            }
+            
+            if !trailGraph.nodes.contains(trailNode) {
+                trailGraph.nodes.append(trailNode)
+            } else {
+                if let index = trailGraph.nodes.indexOf(trailNode) {
+                    if !trailGraph.nodes[index].neighbors.contains(prevNode) {
+                        trailGraph.nodes[index].neighbors.append(prevNode)
+                    }
+                }
+            }
+            
+            prevNode = trailNode
+        }
     }
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
@@ -232,8 +294,29 @@ class ViewController: UIViewController, MKMapViewDelegate {
 
 class UserAnnotation: MKPointAnnotation {
     var imageName: String!
+    var node: TrailNode!
     
     override init() {
         super.init()
     }
 }
+
+class TrailGraph:NSObject {
+    var nodes:[TrailNode]!
+    
+    override init() {
+        super.init()
+        nodes = [TrailNode]()
+    }
+}
+
+class TrailNode:NSObject {
+    var location:CLLocationCoordinate2D!
+    var neighbors:[TrailNode]!
+    
+    override init() {
+        super.init()
+        neighbors = [TrailNode]()
+    }
+}
+
