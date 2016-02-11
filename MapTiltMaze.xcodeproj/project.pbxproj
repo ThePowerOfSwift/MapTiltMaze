@@ -11,6 +11,13 @@
 		F615E15F1C6B1BFC0095CD7F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615E15E1C6B1BFC0095CD7F /* ViewController.swift */; };
 		F615E1641C6B1BFC0095CD7F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F615E1631C6B1BFC0095CD7F /* Assets.xcassets */; };
 		F615E1671C6B1BFC0095CD7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F615E1651C6B1BFC0095CD7F /* LaunchScreen.storyboard */; };
+		F6962A0A1C6C70BB001B2668 /* ballHoleGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6962A031C6C70BB001B2668 /* ballHoleGame.swift */; };
+		F6962A0B1C6C70BB001B2668 /* BouncerBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6962A041C6C70BB001B2668 /* BouncerBehavior.swift */; };
+		F6962A0C1C6C70BB001B2668 /* GameObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6962A051C6C70BB001B2668 /* GameObject.swift */; };
+		F6962A0D1C6C70BB001B2668 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6962A061C6C70BB001B2668 /* GameViewController.swift */; };
+		F6962A0E1C6C70BB001B2668 /* GameViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6962A071C6C70BB001B2668 /* GameViewDelegate.swift */; };
+		F6962A0F1C6C70BB001B2668 /* navControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6962A081C6C70BB001B2668 /* navControllerDelegate.swift */; };
+		F6962A101C6C70BB001B2668 /* newViewImageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6962A091C6C70BB001B2668 /* newViewImageDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +27,13 @@
 		F615E1631C6B1BFC0095CD7F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F615E1661C6B1BFC0095CD7F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F615E1681C6B1BFC0095CD7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F6962A031C6C70BB001B2668 /* ballHoleGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ballHoleGame.swift; sourceTree = "<group>"; };
+		F6962A041C6C70BB001B2668 /* BouncerBehavior.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BouncerBehavior.swift; sourceTree = "<group>"; };
+		F6962A051C6C70BB001B2668 /* GameObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameObject.swift; sourceTree = "<group>"; };
+		F6962A061C6C70BB001B2668 /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		F6962A071C6C70BB001B2668 /* GameViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewDelegate.swift; sourceTree = "<group>"; };
+		F6962A081C6C70BB001B2668 /* navControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = navControllerDelegate.swift; sourceTree = "<group>"; };
+		F6962A091C6C70BB001B2668 /* newViewImageDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = newViewImageDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,10 +69,25 @@
 				F615E15C1C6B1BFC0095CD7F /* AppDelegate.swift */,
 				F615E15E1C6B1BFC0095CD7F /* ViewController.swift */,
 				F615E1631C6B1BFC0095CD7F /* Assets.xcassets */,
+				F6962A111C6C70C9001B2668 /* ball game */,
 				F615E1651C6B1BFC0095CD7F /* LaunchScreen.storyboard */,
 				F615E1681C6B1BFC0095CD7F /* Info.plist */,
 			);
 			path = MapTiltMaze;
+			sourceTree = "<group>";
+		};
+		F6962A111C6C70C9001B2668 /* ball game */ = {
+			isa = PBXGroup;
+			children = (
+				F6962A031C6C70BB001B2668 /* ballHoleGame.swift */,
+				F6962A041C6C70BB001B2668 /* BouncerBehavior.swift */,
+				F6962A051C6C70BB001B2668 /* GameObject.swift */,
+				F6962A061C6C70BB001B2668 /* GameViewController.swift */,
+				F6962A071C6C70BB001B2668 /* GameViewDelegate.swift */,
+				F6962A081C6C70BB001B2668 /* navControllerDelegate.swift */,
+				F6962A091C6C70BB001B2668 /* newViewImageDelegate.swift */,
+			);
+			name = "ball game";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -132,8 +161,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6962A0A1C6C70BB001B2668 /* ballHoleGame.swift in Sources */,
 				F615E15F1C6B1BFC0095CD7F /* ViewController.swift in Sources */,
+				F6962A0F1C6C70BB001B2668 /* navControllerDelegate.swift in Sources */,
+				F6962A0B1C6C70BB001B2668 /* BouncerBehavior.swift in Sources */,
 				F615E15D1C6B1BFC0095CD7F /* AppDelegate.swift in Sources */,
+				F6962A101C6C70BB001B2668 /* newViewImageDelegate.swift in Sources */,
+				F6962A0D1C6C70BB001B2668 /* GameViewController.swift in Sources */,
+				F6962A0C1C6C70BB001B2668 /* GameObject.swift in Sources */,
+				F6962A0E1C6C70BB001B2668 /* GameViewDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
