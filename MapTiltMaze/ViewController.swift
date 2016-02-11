@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import CoreMotion
 
 class ViewController: UIViewController, MKMapViewDelegate {
 
@@ -15,7 +16,8 @@ class ViewController: UIViewController, MKMapViewDelegate {
     var annotations = [MKPointAnnotation]()
     var fullRoute = [CLLocationCoordinate2D]()
     var userLocation:UserAnnotation!
-    
+    var motionManager:CMMotionManager!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -127,8 +129,52 @@ class ViewController: UIViewController, MKMapViewDelegate {
             self.mapView.addOverlay(route.polyline, level: MKOverlayLevel.AboveRoads)
             if self.fullRoute.count > 1 {
                 self.updateUserLocationTo(self.fullRoute.first!)
+                
+                self.motionManager = CMMotionManager()
+                self.motionManager.accelerometerUpdateInterval = 0.5
+                self.motionManager.gyroUpdateInterval = 0.5
+
+                self.motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue()!, withHandler: { (accelerometerData, error) -> Void in
+                    if error == nil {
+                        self.processAccelerationData(accelerometerData!.acceleration)
+                    } else {
+                        print(error!)
+                    }
+                })
+                
+//                self.motionManager.startGyroUpdatesToQueue(NSOperationQueue.currentQueue()!, withHandler: { (accelerometerData, error) -> Void in
+//                    if error == nil {
+//                        processAccelerationData(accelerometerData!.rotationRate)
+//                    } else {
+//                        print(error!)
+//                    }
+//                })
             }
         }
+    }
+    
+    func processAccelerationData(acceleration: CMAcceleration){
+        let accX = acceleration.x
+        let accY = acceleration.y
+
+        //create a line between current position and next position and save the slope
+        
+        let trailSlope = getSlope(a: ((fullRoute[0].latitude) as Double,(fullRoute[0].longitude) as Double),
+                                  b: ((fullRoute[1].latitude) as Double,(fullRoute[1].longitude) as Double))
+        print("trailSlope: \(trailSlope)")
+
+        //create a line between the current position and the position that the device is detecting and save the slope
+        let detectedSlope = getSlope(a: ((fullRoute[0].latitude) as Double,(fullRoute[0].longitude) as Double),
+                                     b: (((fullRoute[0].latitude) as Double) + accX, ((fullRoute[0].longitude) as Double) + accY))
+        print("detectedSlope: \(detectedSlope)")
+        
+        //if the 2 have same slopes within a degree of error then set progress forward to next position
+    }
+    
+    func getSlope(a a:(x:Double,y:Double), b:(x:Double,y:Double)) -> Double{
+        let slope:Double!
+        slope = (b.y - a.y) / (b.x - a.x)
+        return slope
     }
     
     func getRouteCoordinates(route:MKRoute) -> [CLLocationCoordinate2D]{
@@ -158,7 +204,7 @@ class ViewController: UIViewController, MKMapViewDelegate {
         }
         
         let reuseId = "test"
-        
+
         var anView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId)
         if anView == nil {
             anView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
@@ -173,7 +219,7 @@ class ViewController: UIViewController, MKMapViewDelegate {
         
         let cpa = annotation as! UserAnnotation
         anView!.image = UIImage(named: cpa.imageName)
-        anView!.alpha = 0.5
+        anView!.alpha = 0.8
         return anView
     }
 
