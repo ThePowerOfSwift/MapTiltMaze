@@ -137,8 +137,6 @@ class ViewController: UIViewController, MKMapViewDelegate {
                     self.updateUserLocationTo(self.trailGraph.nodes.first!.location)
                     self.motionManager = CMMotionManager()
                     self.motionManager.accelerometerUpdateInterval = 0.1
-//                    self.motionManager.gyroUpdateInterval = 0.5
-//                    self.motionManager.deviceMotionUpdateInterval = 0.5
                     
                     self.motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue()!, withHandler: { (accelerometerData, error) -> Void in
                         if error == nil {
@@ -158,55 +156,32 @@ class ViewController: UIViewController, MKMapViewDelegate {
 
         
         //create a line between current position and next position and save the slope
-        let firstLoc:CLLocationCoordinate2D = self.trailGraph.nodes.first!.location
-        let secondLoc:CLLocationCoordinate2D = self.trailGraph.nodes.last!.location
+        let firstLoc:CLLocationCoordinate2D = self.trailGraph.nodes[0].location
+        let secondLoc:CLLocationCoordinate2D = self.trailGraph.nodes[1].location
         let testLoc:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: (((firstLoc.latitude) as Double) + dY) as CLLocationDegrees, longitude: (((firstLoc.longitude) as Double) + dX) as CLLocationDegrees)
-        
-        let trailSlope = getSlope(a: ((firstLoc.latitude) as Double,(firstLoc.longitude) as Double),
-                                  b: ((secondLoc.latitude) as Double,(secondLoc.longitude) as Double))
 
-        print("firstLoc: \(firstLoc)")
-        print("secondLoc: \(secondLoc)")
-        
-        print("testLoc: \(testLoc)")
         updateTestLocationTo(testLoc)
+        drawTestLine(a: firstLoc, b: testLoc)
         
+        let trailNodeOffsetX = secondLoc.latitude - firstLoc.latitude
+        let trailNodeOffsetY = secondLoc.longitude - firstLoc.longitude
         
-        
-        print("trailSlope: \(trailSlope)")
-        
-//        create a line between the current position and the position that the device is detecting and save the slope
-        let detectedSlope = getSlope(a: ((firstLoc.latitude) as Double,(firstLoc.longitude) as Double),
-                                     b: (((firstLoc.latitude) as Double) + dX, ((firstLoc.longitude) as Double) + dY))
-        print("detectedSlope: \(detectedSlope)")
+        let trailAngle = convertCoordToDegrees(a: trailNodeOffsetY as Double, b: trailNodeOffsetX as Double)
+        let testAngle = convertCoordToDegrees(a: dX, b: dY)
+
+        print(trailAngle)
+        print(testAngle)
         print("====================")
-        
 
-        
-        var coordinates = [CLLocationCoordinate2D]()
-        coordinates.append(firstLoc)
-        coordinates.append(testLoc)
-        if testpolyLine != nil {
-            mapView.removeOverlay(testpolyLine)
-        }
-        testpolyLine = MKPolyline(coordinates: &coordinates, count: coordinates.count)
-        
-        let padding:CGFloat = 50.0
-        let visibleMapRect = mapView.mapRectThatFits(testpolyLine.boundingMapRect, edgePadding: UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding))
-        mapView.setRegion(MKCoordinateRegionForMapRect(visibleMapRect), animated: true)
-        
-        mapView.addOverlay(testpolyLine)
-        
-
-//        //if the 2 have same slopes within a degree of error then set progress forward to next position
     }
     
-    func getSlope(a a:(x:Double,y:Double), b:(x:Double,y:Double)) -> Double{
-        let slope:Double!
-        slope = (b.y - a.y) / (b.x - a.x)
-        return slope
+    func convertCoordToDegrees(a a:Double, b:Double) -> Double{
+        let rad = atan2(a, b)
+        let deg = rad * 180 / M_PI
+        
+        return deg
     }
-    
+
     func getRouteCoordinates(route:MKRoute) -> [CLLocationCoordinate2D]{
         let pointCount = route.polyline.pointCount
         var routeCoordinates: [CLLocationCoordinate2D] = Array(count: pointCount, repeatedValue: CLLocationCoordinate2D())
@@ -242,6 +217,22 @@ class ViewController: UIViewController, MKMapViewDelegate {
         annotations.append(testLocation)
         mapView.showAnnotations(annotations, animated: true)
         
+    }
+    
+    func drawTestLine(a a:CLLocationCoordinate2D, b:CLLocationCoordinate2D){
+        var coordinates = [CLLocationCoordinate2D]()
+        coordinates.append(a)
+        coordinates.append(b)
+        if testpolyLine != nil {
+            mapView.removeOverlay(testpolyLine)
+        }
+        testpolyLine = MKPolyline(coordinates: &coordinates, count: coordinates.count)
+        
+        let padding:CGFloat = 50.0
+        let visibleMapRect = mapView.mapRectThatFits(testpolyLine.boundingMapRect, edgePadding: UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding))
+        mapView.setRegion(MKCoordinateRegionForMapRect(visibleMapRect), animated: true)
+        
+        mapView.addOverlay(testpolyLine)
     }
     
     func moveUserLocationTo(node: TrailNode){
