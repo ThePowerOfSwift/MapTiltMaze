@@ -24,6 +24,10 @@ class ViewController: UIViewController, MKMapViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let resetButton = UIButton(frame: CGRectMake(0,0,50,50))
+        resetButton.addTarget(self, action: "clearMap:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.view.addSubview(resetButton)
         // Do any additional setup after loading the view, typically from a nib.
         mapView = MKMapView(frame: self.view.bounds)
         mapView.delegate = self
@@ -135,6 +139,8 @@ class ViewController: UIViewController, MKMapViewDelegate {
                 if self.trailGraph.nodes.count > 1 {
 //                    self.updateUserLocationTo(self.fullRoute.first!)
                     self.updateUserLocationTo(self.trailGraph.nodes.first!.location)
+                    self.userLocation.node = self.trailGraph.nodes.first!
+                    
                     self.motionManager = CMMotionManager()
                     self.motionManager.accelerometerUpdateInterval = 0.1
                     
@@ -153,11 +159,16 @@ class ViewController: UIViewController, MKMapViewDelegate {
     func processAccelerationData(acceleration: CMAcceleration){
         let dY = acceleration.y
         let dX = acceleration.x
-
         
         //create a line between current position and next position and save the slope
-        let firstLoc:CLLocationCoordinate2D = self.trailGraph.nodes[0].location
-        let secondLoc:CLLocationCoordinate2D = self.trailGraph.nodes[1].location
+//        let firstLoc:CLLocationCoordinate2D = self.trailGraph.nodes[0].location
+//        let secondLoc:CLLocationCoordinate2D = self.trailGraph.nodes[1].location
+        let firstLoc:CLLocationCoordinate2D = self.userLocation.node.location
+        let secondLoc:CLLocationCoordinate2D = self.userLocation.node.neighbors.first!.location
+        
+        print(firstLoc)
+        print(secondLoc)
+        
         let testLoc:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: (((firstLoc.latitude) as Double) + dY) as CLLocationDegrees, longitude: (((firstLoc.longitude) as Double) + dX) as CLLocationDegrees)
 
         updateTestLocationTo(testLoc)
@@ -166,27 +177,38 @@ class ViewController: UIViewController, MKMapViewDelegate {
         let trailNodeOffsetX = secondLoc.latitude - firstLoc.latitude
         let trailNodeOffsetY = secondLoc.longitude - firstLoc.longitude
         
-        let trailAngle = convertCoordToDegrees(a: trailNodeOffsetY as Double, b: trailNodeOffsetX as Double)
-        let testAngle = convertCoordToDegrees(a: dX, b: dY)
-
-//        print(trailAngle)
-//        print(testAngle)
-//        print("====================")
-
+        var trailAngle = convertCoordToDegrees(a: trailNodeOffsetY as Double, b: trailNodeOffsetX as Double)
+        var testAngle = convertCoordToDegrees(a: dX, b: dY)
+        
+        if trailAngle == 0 {
+            trailAngle = 0.1
+        }
+        
+        if testAngle == 0 {
+            testAngle = -0.1
+        }
+        
+        print("userLocation.node.location: \(userLocation.node.location)")
         if isCloseEnough(0.25, trailAngle: trailAngle, testAngle: testAngle){
             print(true)
+            if let neighbor = userLocation.node.neighbors.first {
+                print("neighbor.location: \(neighbor.location)")
+                updateUserLocationTo(neighbor.location)
+            }
+            
         }else {
             print(false)
         }
         
+        print("====================")
     }
     
     func isCloseEnough(allowedErrorMargin: Double, trailAngle:Double, testAngle:Double) -> Bool {
-        let error = ( trailAngle - testAngle ) / trailAngle
+        let error = fabs(( trailAngle - testAngle ) / trailAngle)
         
         print(error)
         
-        if abs(error) < allowedErrorMargin {
+        if error < allowedErrorMargin {
             return true
         }
         
@@ -208,18 +230,29 @@ class ViewController: UIViewController, MKMapViewDelegate {
     }
     
     func updateUserLocationTo(location:CLLocationCoordinate2D){
+
         if userLocation == nil {
             userLocation = UserAnnotation()
             userLocation.imageName = "loc"
         }
+        
+        if userLocation.node != nil && userLocation.node.location != nil{
+            print("old Loc: \(userLocation.node.location)")
+        }
+        
         if let index = annotations.indexOf(userLocation) {
             annotations.removeAtIndex(index)
+            userLocation.coordinate = location
+            if let nodeIndex = trailGraph.nodes.indexOf(userLocation.node.neighbors.first!) {
+                userLocation.node = trailGraph.nodes[nodeIndex]
+                annotations[index] = userLocation
+                mapView.showAnnotations(annotations, animated: true)
+            }
         }
-
-        userLocation.coordinate = location
-        annotations.append(userLocation)
-        mapView.showAnnotations(annotations, animated: true)
-
+        if userLocation.node != nil && userLocation.node.location != nil{
+            print("new Loc: \(userLocation.node.location)")
+        }
+        
     }
     
     func updateTestLocationTo(location:CLLocationCoordinate2D){
@@ -269,10 +302,6 @@ class ViewController: UIViewController, MKMapViewDelegate {
                 trailNode.neighbors.append(prevNode)
             }
 
-            if trailGraph.nodes.count == 1 {
-                trailGraph.nodes.first!.neighbors.append(prevNode)
-            }
-            
             if !trailGraph.nodes.contains(trailNode) {
                 trailGraph.nodes.append(trailNode)
             } else {
@@ -282,7 +311,11 @@ class ViewController: UIViewController, MKMapViewDelegate {
                     }
                 }
             }
-            
+
+            if trailGraph.nodes.count == 2 {
+                trailGraph.nodes.first!.neighbors.append(trailNode)
+            }
+
             prevNode = trailNode
         }
     }
@@ -315,38 +348,12 @@ class ViewController: UIViewController, MKMapViewDelegate {
         return anView
     }
 
-    func clearMap(){
+    func clearMap(sender: UIButton){
         mapView.removeOverlays(mapView.overlays)
         mapView.removeAnnotations(annotations)
         annotations.removeAll()
     }
 }
 
-class UserAnnotation: MKPointAnnotation {
-    var imageName: String!
-    var node: TrailNode!
-    
-    override init() {
-        super.init()
-    }
-}
 
-class TrailGraph:NSObject {
-    var nodes:[TrailNode]!
-    
-    override init() {
-        super.init()
-        nodes = [TrailNode]()
-    }
-}
-
-class TrailNode:NSObject {
-    var location:CLLocationCoordinate2D!
-    var neighbors:[TrailNode]!
-    
-    override init() {
-        super.init()
-        neighbors = [TrailNode]()
-    }
-}
 
