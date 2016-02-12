@@ -19,6 +19,7 @@ class ViewController: UIViewController, MKMapViewDelegate {
     var fullRoute = [CLLocationCoordinate2D]()
     var userLocation:UserAnnotation!
     var testLocation:UserAnnotation!
+    var testpolyLine:MKPolyline!
     var motionManager:CMMotionManager!
 
     override func viewDidLoad() {
@@ -170,6 +171,8 @@ class ViewController: UIViewController, MKMapViewDelegate {
         print("testLoc: \(testLoc)")
         updateTestLocationTo(testLoc)
         
+        
+        
         print("trailSlope: \(trailSlope)")
         
 //        create a line between the current position and the position that the device is detecting and save the slope
@@ -177,6 +180,22 @@ class ViewController: UIViewController, MKMapViewDelegate {
                                      b: (((firstLoc.latitude) as Double) + dX, ((firstLoc.longitude) as Double) + dY))
         print("detectedSlope: \(detectedSlope)")
         print("====================")
+        
+
+        
+        var coordinates = [CLLocationCoordinate2D]()
+        coordinates.append(firstLoc)
+        coordinates.append(testLoc)
+        if testpolyLine != nil {
+            mapView.removeOverlay(testpolyLine)
+        }
+        testpolyLine = MKPolyline(coordinates: &coordinates, count: coordinates.count)
+        
+        let padding:CGFloat = 50.0
+        let visibleMapRect = mapView.mapRectThatFits(testpolyLine.boundingMapRect, edgePadding: UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding))
+        mapView.setRegion(MKCoordinateRegionForMapRect(visibleMapRect), animated: true)
+        
+        mapView.addOverlay(testpolyLine)
         
 
 //        //if the 2 have same slopes within a degree of error then set progress forward to next position
