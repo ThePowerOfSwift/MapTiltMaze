@@ -169,10 +169,28 @@ class ViewController: UIViewController, MKMapViewDelegate {
         let trailAngle = convertCoordToDegrees(a: trailNodeOffsetY as Double, b: trailNodeOffsetX as Double)
         let testAngle = convertCoordToDegrees(a: dX, b: dY)
 
-        print(trailAngle)
-        print(testAngle)
-        print("====================")
+//        print(trailAngle)
+//        print(testAngle)
+//        print("====================")
 
+        if isCloseEnough(0.25, trailAngle: trailAngle, testAngle: testAngle){
+            print(true)
+        }else {
+            print(false)
+        }
+        
+    }
+    
+    func isCloseEnough(allowedErrorMargin: Double, trailAngle:Double, testAngle:Double) -> Bool {
+        let error = ( trailAngle - testAngle ) / trailAngle
+        
+        print(error)
+        
+        if abs(error) < allowedErrorMargin {
+            return true
+        }
+        
+        return false
     }
     
     func convertCoordToDegrees(a a:Double, b:Double) -> Double{
