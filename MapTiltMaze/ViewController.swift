@@ -18,6 +18,7 @@ class ViewController: UIViewController, MKMapViewDelegate {
     var prevNode:TrailNode!
     var fullRoute = [CLLocationCoordinate2D]()
     var userLocation:UserAnnotation!
+    var testLocation:UserAnnotation!
     var motionManager:CMMotionManager!
 
     override func viewDidLoad() {
@@ -126,75 +127,59 @@ class ViewController: UIViewController, MKMapViewDelegate {
             }
             
             let route:MKRoute = routeResponse.routes[0]
-            let routeCoordinates:[CLLocationCoordinate2D] = self.getRouteCoordinates(route)
             
-            self.updateTrailGraph(routeCoordinates)
-            
-            self.mapView.addOverlay(route.polyline, level: MKOverlayLevel.AboveRoads)
-            if self.trailGraph.nodes.count > 1 {
-                self.updateUserLocationTo(self.fullRoute.first!)
-                
-                self.motionManager = CMMotionManager()
-                self.motionManager.accelerometerUpdateInterval = 0.5
-                self.motionManager.gyroUpdateInterval = 0.5
-                self.motionManager.deviceMotionUpdateInterval = 0.5
-                
-//                self.motionManager.startDeviceMotionUpdatesToQueue(NSOperationQueue.currentQueue()!, withHandler: { (deviceMotion, error) -> Void in
-//                    if error == nil {
-//                        self.processDeviceMotionData(deviceMotion!.attitude)
-//                    } else {
-//                        print(error!)
-//                    }
-//                })
-
-                self.motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue()!, withHandler: { (accelerometerData, error) -> Void in
-                    if error == nil {
-                        self.processAccelerationData(accelerometerData!.acceleration)
-                    } else {
-                        print(error!)
-                    }
-                })
-                
-//                self.motionManager.startGyroUpdatesToQueue(NSOperationQueue.currentQueue()!, withHandler: { (accelerometerData, error) -> Void in
-//                    if error == nil {
-//                        processAccelerationData(accelerometerData!.rotationRate)
-//                    } else {
-//                        print(error!)
-//                    }
-//                })
+            if let routeCoordinates:[CLLocationCoordinate2D] = self.getRouteCoordinates(route) {
+                self.updateTrailGraph(routeCoordinates)
+                self.mapView.addOverlay(route.polyline, level: MKOverlayLevel.AboveRoads)
+                if self.trailGraph.nodes.count > 1 {
+//                    self.updateUserLocationTo(self.fullRoute.first!)
+                    self.updateUserLocationTo(self.trailGraph.nodes.first!.location)
+                    self.motionManager = CMMotionManager()
+                    self.motionManager.accelerometerUpdateInterval = 0.1
+//                    self.motionManager.gyroUpdateInterval = 0.5
+//                    self.motionManager.deviceMotionUpdateInterval = 0.5
+                    
+                    self.motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue()!, withHandler: { (accelerometerData, error) -> Void in
+                        if error == nil {
+                            self.processAccelerationData(accelerometerData!.acceleration)
+                        } else {
+                            print(error!)
+                        }
+                    })
+                }
             }
         }
     }
-    
-    func processDeviceMotionData(attitude: CMAttitude){
-        let attRoll = attitude.roll
-        let attPitch = attitude.pitch
-//        let attYaw = attitude.yaw
-        print("attRoll: \(attRoll) | attPitch: \(attPitch)")
-//        print("attRoll: \(attRoll) | attPitch: \(attPitch) | attYaw: \(attYaw)")
-    }
-    
+
     func processAccelerationData(acceleration: CMAcceleration){
-        let accX = acceleration.x
-        let accY = acceleration.y
+        let dY = acceleration.y
+        let dX = acceleration.x
 
-        //create a line between current position and next position and save the slope
         
-        let trailSlope = getSlope(a: ((fullRoute[0].latitude) as Double,(fullRoute[0].longitude) as Double),
-                                  b: ((fullRoute[1].latitude) as Double,(fullRoute[1].longitude) as Double))
-        print("trailSlope: \(trailSlope)")
+        //create a line between current position and next position and save the slope
+        let firstLoc:CLLocationCoordinate2D = self.trailGraph.nodes.first!.location
+        let secondLoc:CLLocationCoordinate2D = self.trailGraph.nodes.last!.location
+        let testLoc:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: (((firstLoc.latitude) as Double) + dY) as CLLocationDegrees, longitude: (((firstLoc.longitude) as Double) + dX) as CLLocationDegrees)
+        
+        let trailSlope = getSlope(a: ((firstLoc.latitude) as Double,(firstLoc.longitude) as Double),
+                                  b: ((secondLoc.latitude) as Double,(secondLoc.longitude) as Double))
 
-        //create a line between the current position and the position that the device is detecting and save the slope
-        let detectedSlope = getSlope(a: ((fullRoute[0].latitude) as Double,(fullRoute[0].longitude) as Double),
-                                     b: (((fullRoute[0].latitude) as Double) + accX, ((fullRoute[0].longitude) as Double) + accY))
+        print("firstLoc: \(firstLoc)")
+        print("secondLoc: \(secondLoc)")
+        
+        print("testLoc: \(testLoc)")
+        updateTestLocationTo(testLoc)
+        
+        print("trailSlope: \(trailSlope)")
+        
+//        create a line between the current position and the position that the device is detecting and save the slope
+        let detectedSlope = getSlope(a: ((firstLoc.latitude) as Double,(firstLoc.longitude) as Double),
+                                     b: (((firstLoc.latitude) as Double) + dX, ((firstLoc.longitude) as Double) + dY))
         print("detectedSlope: \(detectedSlope)")
-//
+        print("====================")
+        
+
 //        //if the 2 have same slopes within a degree of error then set progress forward to next position
-//        let dx = acceleration.y * -50
-//        let dy =  acceleration.x * 50
-//        
-//        print("from fullRoute[0]")
-//        print(CGVector(dx: acceleration.y * -50, dy: acceleration.x * 50))
     }
     
     func getSlope(a a:(x:Double,y:Double), b:(x:Double,y:Double)) -> Double{
@@ -225,6 +210,21 @@ class ViewController: UIViewController, MKMapViewDelegate {
 
     }
     
+    func updateTestLocationTo(location:CLLocationCoordinate2D){
+        if testLocation == nil {
+            testLocation = UserAnnotation()
+            testLocation.imageName = "loc"
+        }
+        if let index = annotations.indexOf(testLocation) {
+            annotations.removeAtIndex(index)
+        }
+        
+        testLocation.coordinate = location
+        annotations.append(testLocation)
+        mapView.showAnnotations(annotations, animated: true)
+        
+    }
+    
     func moveUserLocationTo(node: TrailNode){
         updateUserLocationTo(node.location)
     }
@@ -237,8 +237,10 @@ class ViewController: UIViewController, MKMapViewDelegate {
         for coord in coordinates {
             let trailNode = TrailNode()
             trailNode.location = coord
-            trailNode.neighbors.append(prevNode)
-            
+            if prevNode != nil {
+                trailNode.neighbors.append(prevNode)
+            }
+
             if trailGraph.nodes.count == 1 {
                 trailGraph.nodes.first!.neighbors.append(prevNode)
             }

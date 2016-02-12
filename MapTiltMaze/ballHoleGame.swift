@@ -69,6 +69,9 @@ class ballHoleGame: GameObject {
             greenBlock?.layer.borderColor = UIColor.greenColor().CGColor
             greenBlock?.layer.borderWidth = 5.0
         }
+        let barrier1 = UIBezierPath(rect: CGRectMake(0,0,50,50))
+        bouncer.addBarrier(barrier1, named: "test")
+        
         if motionManager.accelerometerAvailable {
             dispatch_async(dispatch_get_main_queue(), {
             })
