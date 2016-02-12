@@ -11,7 +11,6 @@ import MapKit
 
 class UserAnnotation: MKPointAnnotation {
     var imageName: String!
-    var location: CLLocationCoordinate2D!
     var node: TrailNode!
     
     override init() {

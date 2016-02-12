@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MapViewController.swift
 //  MapTiltMaze
 //
 //  Created by Stanley Chiang on 2/9/16.
@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreMotion
 
-class ViewController: UIViewController, MKMapViewDelegate {
+class MapViewController: UIViewController, MKMapViewDelegate, overlayDelegate {
 
     var mapView:MKMapView!
     var annotations = [MKPointAnnotation]()
@@ -22,13 +22,11 @@ class ViewController: UIViewController, MKMapViewDelegate {
     var testpolyLine:MKPolyline!
     var motionManager:CMMotionManager!
 
+    var overlay:OverlayView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let resetButton = UIButton(frame: CGRectMake(0,0,50,50))
-        resetButton.addTarget(self, action: "clearMap:", forControlEvents: UIControlEvents.TouchUpInside)
-        self.view.addSubview(resetButton)
-        // Do any additional setup after loading the view, typically from a nib.
         mapView = MKMapView(frame: self.view.bounds)
         mapView.delegate = self
         self.view.addSubview(mapView)
@@ -36,6 +34,18 @@ class ViewController: UIViewController, MKMapViewDelegate {
         let longPressRec:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "pinLocation:")
         longPressRec.minimumPressDuration = 0.5
         mapView.addGestureRecognizer(longPressRec)
+
+        overlay = OverlayView(frame: CGRectMake(0,self.view.frame.height - 50, self.view.frame.width, 50))
+        overlay.delegate = self
+        self.view.addSubview(overlay)
+        overlay.initGameCenter()
+        overlay.loadMainGameMenu()
+        
+//        let resetButton = UIButton(frame: CGRectMake(0,0,50,50))
+//        resetButton.addTarget(self, action: "clearMap:", forControlEvents: UIControlEvents.TouchUpInside)
+//        self.view.addSubview(resetButton)
+
+    
     }
 
     func pinLocation(sender:UILongPressGestureRecognizer){
@@ -353,6 +363,13 @@ class ViewController: UIViewController, MKMapViewDelegate {
         mapView.removeAnnotations(annotations)
         annotations.removeAll()
     }
+    
+    func showGameCenterLogin(sender: UIViewController) {
+        self.presentViewController(sender, animated: true) { () -> Void in
+            print("presented view controller")
+        }
+    }
+    
 }
 
 

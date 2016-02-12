@@ -11,9 +11,13 @@
 		F6015CA91C6DAF9C007E109F /* TrailNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6015CA81C6DAF9C007E109F /* TrailNode.swift */; };
 		F6015CAB1C6DAFD3007E109F /* UserAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6015CAA1C6DAFD3007E109F /* UserAnnotation.swift */; };
 		F615E15D1C6B1BFC0095CD7F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615E15C1C6B1BFC0095CD7F /* AppDelegate.swift */; };
-		F615E15F1C6B1BFC0095CD7F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615E15E1C6B1BFC0095CD7F /* ViewController.swift */; };
+		F615E15F1C6B1BFC0095CD7F /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615E15E1C6B1BFC0095CD7F /* MapViewController.swift */; };
 		F615E1641C6B1BFC0095CD7F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F615E1631C6B1BFC0095CD7F /* Assets.xcassets */; };
 		F615E1671C6B1BFC0095CD7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F615E1651C6B1BFC0095CD7F /* LaunchScreen.storyboard */; };
+		F67343851C6E54AB0005960C /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = F67343841C6E54AB0005960C /* README.md */; };
+		F67343871C6E673B0005960C /* OverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67343861C6E673B0005960C /* OverlayView.swift */; };
+		F67343891C6E6FC30005960C /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F67343881C6E6FC30005960C /* GameKit.framework */; };
+		F673438B1C6E81E20005960C /* GameLevelModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F673438A1C6E81E20005960C /* GameLevelModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,10 +26,14 @@
 		F6015CAA1C6DAFD3007E109F /* UserAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAnnotation.swift; sourceTree = "<group>"; };
 		F615E1591C6B1BFC0095CD7F /* MapTiltMaze.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapTiltMaze.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F615E15C1C6B1BFC0095CD7F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		F615E15E1C6B1BFC0095CD7F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		F615E15E1C6B1BFC0095CD7F /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		F615E1631C6B1BFC0095CD7F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F615E1661C6B1BFC0095CD7F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F615E1681C6B1BFC0095CD7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F67343841C6E54AB0005960C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		F67343861C6E673B0005960C /* OverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverlayView.swift; sourceTree = "<group>"; };
+		F67343881C6E6FC30005960C /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		F673438A1C6E81E20005960C /* GameLevelModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameLevelModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F67343891C6E6FC30005960C /* GameKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +51,7 @@
 		F615E1501C6B1BFC0095CD7F = {
 			isa = PBXGroup;
 			children = (
+				F67343881C6E6FC30005960C /* GameKit.framework */,
 				F615E15B1C6B1BFC0095CD7F /* MapTiltMaze */,
 				F615E15A1C6B1BFC0095CD7F /* Products */,
 			);
@@ -59,9 +69,12 @@
 			isa = PBXGroup;
 			children = (
 				F615E15C1C6B1BFC0095CD7F /* AppDelegate.swift */,
-				F615E15E1C6B1BFC0095CD7F /* ViewController.swift */,
+				F67343861C6E673B0005960C /* OverlayView.swift */,
+				F615E15E1C6B1BFC0095CD7F /* MapViewController.swift */,
 				F6015CA81C6DAF9C007E109F /* TrailNode.swift */,
 				F6015CAA1C6DAFD3007E109F /* UserAnnotation.swift */,
+				F67343841C6E54AB0005960C /* README.md */,
+				F673438A1C6E81E20005960C /* GameLevelModel.swift */,
 				F6015CA61C6DAF80007E109F /* TrailGraph.swift */,
 				F615E1631C6B1BFC0095CD7F /* Assets.xcassets */,
 				F615E1651C6B1BFC0095CD7F /* LaunchScreen.storyboard */,
@@ -103,6 +116,11 @@
 					F615E1581C6B1BFC0095CD7F = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = 4C8V97R8N3;
+						SystemCapabilities = {
+							com.apple.GameCenter = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -141,8 +159,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F67343851C6E54AB0005960C /* README.md in Sources */,
 				F6015CA91C6DAF9C007E109F /* TrailNode.swift in Sources */,
-				F615E15F1C6B1BFC0095CD7F /* ViewController.swift in Sources */,
+				F673438B1C6E81E20005960C /* GameLevelModel.swift in Sources */,
+				F67343871C6E673B0005960C /* OverlayView.swift in Sources */,
+				F615E15F1C6B1BFC0095CD7F /* MapViewController.swift in Sources */,
 				F6015CAB1C6DAFD3007E109F /* UserAnnotation.swift in Sources */,
 				F6015CA71C6DAF80007E109F /* TrailGraph.swift in Sources */,
 				F615E15D1C6B1BFC0095CD7F /* AppDelegate.swift in Sources */,
@@ -249,10 +270,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = MapTiltMaze/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.stan.MapTiltMaze;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -261,10 +284,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = MapTiltMaze/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.stan.MapTiltMaze;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
