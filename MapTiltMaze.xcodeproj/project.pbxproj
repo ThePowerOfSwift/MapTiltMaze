@@ -17,7 +17,11 @@
 		F67343851C6E54AB0005960C /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = F67343841C6E54AB0005960C /* README.md */; };
 		F67343871C6E673B0005960C /* OverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67343861C6E673B0005960C /* OverlayView.swift */; };
 		F67343891C6E6FC30005960C /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F67343881C6E6FC30005960C /* GameKit.framework */; };
-		F673438B1C6E81E20005960C /* GameLevelModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F673438A1C6E81E20005960C /* GameLevelModel.swift */; };
+		F673438B1C6E81E20005960C /* GameLevels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F673438A1C6E81E20005960C /* GameLevels.swift */; };
+		F680761F1C6EAD4D0004E80B /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F680761E1C6EAD4D0004E80B /* StoreKit.framework */; };
+		F68076211C6EBCBB0004E80B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68076201C6EBCBB0004E80B /* MainViewController.swift */; };
+		F68076251C6ECCF00004E80B /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68076241C6ECCF00004E80B /* MapView.swift */; };
+		F68076271C6ED5D00004E80B /* MotionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68076261C6ED5D00004E80B /* MotionManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +37,11 @@
 		F67343841C6E54AB0005960C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F67343861C6E673B0005960C /* OverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverlayView.swift; sourceTree = "<group>"; };
 		F67343881C6E6FC30005960C /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
-		F673438A1C6E81E20005960C /* GameLevelModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameLevelModel.swift; sourceTree = "<group>"; };
+		F673438A1C6E81E20005960C /* GameLevels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameLevels.swift; sourceTree = "<group>"; };
+		F680761E1C6EAD4D0004E80B /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		F68076201C6EBCBB0004E80B /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		F68076241C6ECCF00004E80B /* MapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		F68076261C6ED5D00004E80B /* MotionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +50,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F67343891C6E6FC30005960C /* GameKit.framework in Frameworks */,
+				F680761F1C6EAD4D0004E80B /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -51,6 +60,7 @@
 		F615E1501C6B1BFC0095CD7F = {
 			isa = PBXGroup;
 			children = (
+				F680761E1C6EAD4D0004E80B /* StoreKit.framework */,
 				F67343881C6E6FC30005960C /* GameKit.framework */,
 				F615E15B1C6B1BFC0095CD7F /* MapTiltMaze */,
 				F615E15A1C6B1BFC0095CD7F /* Products */,
@@ -70,12 +80,15 @@
 			children = (
 				F615E15C1C6B1BFC0095CD7F /* AppDelegate.swift */,
 				F67343861C6E673B0005960C /* OverlayView.swift */,
+				F68076201C6EBCBB0004E80B /* MainViewController.swift */,
 				F615E15E1C6B1BFC0095CD7F /* MapViewController.swift */,
+				F68076261C6ED5D00004E80B /* MotionManager.swift */,
+				F68076241C6ECCF00004E80B /* MapView.swift */,
+				F673438A1C6E81E20005960C /* GameLevels.swift */,
+				F6015CA61C6DAF80007E109F /* TrailGraph.swift */,
 				F6015CA81C6DAF9C007E109F /* TrailNode.swift */,
 				F6015CAA1C6DAFD3007E109F /* UserAnnotation.swift */,
 				F67343841C6E54AB0005960C /* README.md */,
-				F673438A1C6E81E20005960C /* GameLevelModel.swift */,
-				F6015CA61C6DAF80007E109F /* TrailGraph.swift */,
 				F615E1631C6B1BFC0095CD7F /* Assets.xcassets */,
 				F615E1651C6B1BFC0095CD7F /* LaunchScreen.storyboard */,
 				F615E1681C6B1BFC0095CD7F /* Info.plist */,
@@ -117,7 +130,13 @@
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = 4C8V97R8N3;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 0;
+							};
 							com.apple.GameCenter = {
+								enabled = 1;
+							};
+							com.apple.InAppPurchase = {
 								enabled = 1;
 							};
 						};
@@ -161,10 +180,13 @@
 			files = (
 				F67343851C6E54AB0005960C /* README.md in Sources */,
 				F6015CA91C6DAF9C007E109F /* TrailNode.swift in Sources */,
-				F673438B1C6E81E20005960C /* GameLevelModel.swift in Sources */,
+				F673438B1C6E81E20005960C /* GameLevels.swift in Sources */,
 				F67343871C6E673B0005960C /* OverlayView.swift in Sources */,
 				F615E15F1C6B1BFC0095CD7F /* MapViewController.swift in Sources */,
+				F68076271C6ED5D00004E80B /* MotionManager.swift in Sources */,
 				F6015CAB1C6DAFD3007E109F /* UserAnnotation.swift in Sources */,
+				F68076211C6EBCBB0004E80B /* MainViewController.swift in Sources */,
+				F68076251C6ECCF00004E80B /* MapView.swift in Sources */,
 				F6015CA71C6DAF80007E109F /* TrailGraph.swift in Sources */,
 				F615E15D1C6B1BFC0095CD7F /* AppDelegate.swift in Sources */,
 			);

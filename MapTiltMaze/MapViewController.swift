@@ -40,12 +40,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, overlayDelegate {
         self.view.addSubview(overlay)
         overlay.initGameCenter()
         overlay.loadMainGameMenu()
-        
-//        let resetButton = UIButton(frame: CGRectMake(0,0,50,50))
-//        resetButton.addTarget(self, action: "clearMap:", forControlEvents: UIControlEvents.TouchUpInside)
-//        self.view.addSubview(resetButton)
 
-    
     }
 
     func pinLocation(sender:UILongPressGestureRecognizer){
@@ -61,23 +56,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, overlayDelegate {
         mapView.showAnnotations(annotations, animated: true)
         
         drawRoute()
-        
-    }
-    
-    func drawPolyline() {
-        mapView.removeOverlays(mapView.overlays)
-        var coordinates:[CLLocationCoordinate2D] = [CLLocationCoordinate2D]()
-        for annotation in annotations {
-            coordinates.append(annotation.coordinate)
-        }
-        
-        let polyLine:MKPolyline = MKPolyline(coordinates: &coordinates, count: coordinates.count)
-
-        let padding:CGFloat = 50.0
-        let visibleMapRect = mapView.mapRectThatFits(polyLine.boundingMapRect, edgePadding: UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding))
-        mapView.setRegion(MKCoordinateRegionForMapRect(visibleMapRect), animated: true)
-
-        mapView.addOverlay(polyLine)
     }
     
     func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
@@ -146,22 +124,23 @@ class MapViewController: UIViewController, MKMapViewDelegate, overlayDelegate {
             if let routeCoordinates:[CLLocationCoordinate2D] = self.getRouteCoordinates(route) {
                 self.updateTrailGraph(routeCoordinates)
                 self.mapView.addOverlay(route.polyline, level: MKOverlayLevel.AboveRoads)
-                if self.trailGraph.nodes.count > 1 {
-//                    self.updateUserLocationTo(self.fullRoute.first!)
-                    self.updateUserLocationTo(self.trailGraph.nodes.first!.location)
-                    self.userLocation.node = self.trailGraph.nodes.first!
-                    
-                    self.motionManager = CMMotionManager()
-                    self.motionManager.accelerometerUpdateInterval = 0.1
-                    
-                    self.motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue()!, withHandler: { (accelerometerData, error) -> Void in
-                        if error == nil {
-                            self.processAccelerationData(accelerometerData!.acceleration)
-                        } else {
-                            print(error!)
-                        }
-                    })
-                }
+
+//                if self.trailGraph.nodes.count > 1 {
+////                    self.updateUserLocationTo(self.fullRoute.first!)
+//                    self.updateUserLocationTo(self.trailGraph.nodes.first!.location)
+//                    self.userLocation.node = self.trailGraph.nodes.first!
+//                    
+//                    self.motionManager = CMMotionManager()
+//                    self.motionManager.accelerometerUpdateInterval = 0.1
+//                    
+//                    self.motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue()!, withHandler: { (accelerometerData, error) -> Void in
+//                        if error == nil {
+//                            self.processAccelerationData(accelerometerData!.acceleration)
+//                        } else {
+//                            print(error!)
+//                        }
+//                    })
+//                }
             }
         }
     }
@@ -294,10 +273,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, overlayDelegate {
         mapView.setRegion(MKCoordinateRegionForMapRect(visibleMapRect), animated: true)
         
         mapView.addOverlay(testpolyLine)
-    }
-    
-    func moveUserLocationTo(node: TrailNode){
-        updateUserLocationTo(node.location)
     }
     
     func updateTrailGraph(coordinates: [CLLocationCoordinate2D]){
