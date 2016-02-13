@@ -125,22 +125,22 @@ class MapViewController: UIViewController, MKMapViewDelegate, overlayDelegate {
                 self.updateTrailGraph(routeCoordinates)
                 self.mapView.addOverlay(route.polyline, level: MKOverlayLevel.AboveRoads)
 
-//                if self.trailGraph.nodes.count > 1 {
-////                    self.updateUserLocationTo(self.fullRoute.first!)
-//                    self.updateUserLocationTo(self.trailGraph.nodes.first!.location)
-//                    self.userLocation.node = self.trailGraph.nodes.first!
-//                    
-//                    self.motionManager = CMMotionManager()
-//                    self.motionManager.accelerometerUpdateInterval = 0.1
-//                    
-//                    self.motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue()!, withHandler: { (accelerometerData, error) -> Void in
-//                        if error == nil {
-//                            self.processAccelerationData(accelerometerData!.acceleration)
-//                        } else {
-//                            print(error!)
-//                        }
-//                    })
-//                }
+                if self.trailGraph.nodes.count > 1 {
+//                    self.updateUserLocationTo(self.fullRoute.first!)
+                    self.updateUserLocationTo(self.trailGraph.nodes.first!.location)
+                    self.userLocation.node = self.trailGraph.nodes.first!
+                    
+                    self.motionManager = CMMotionManager()
+                    self.motionManager.accelerometerUpdateInterval = 0.1
+                    
+                    self.motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue()!, withHandler: { (accelerometerData, error) -> Void in
+                        if error == nil {
+                            self.processAccelerationData(accelerometerData!.acceleration)
+                        } else {
+                            print(error!)
+                        }
+                    })
+                }
             }
         }
     }
@@ -152,11 +152,22 @@ class MapViewController: UIViewController, MKMapViewDelegate, overlayDelegate {
         //create a line between current position and next position and save the slope
 //        let firstLoc:CLLocationCoordinate2D = self.trailGraph.nodes[0].location
 //        let secondLoc:CLLocationCoordinate2D = self.trailGraph.nodes[1].location
+        
         let firstLoc:CLLocationCoordinate2D = self.userLocation.node.location
         let secondLoc:CLLocationCoordinate2D = self.userLocation.node.neighbors.first!.location
+        let secLocNeighbor = self.userLocation.node.neighbors.first!.neighbors.first!.location
         
-        print(firstLoc)
-        print(secondLoc)
+//        let first = userLocation.node
+//        let second = first.neighbors.first!
+//        let third = second.neighbors.first!
+//        
+//        print(first)
+//        print(second)
+//        print(third)
+
+//        print(firstLoc)
+//        print(secondLoc)
+//        print(secLocNeighbor)
         
         let testLoc:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: (((firstLoc.latitude) as Double) + dY) as CLLocationDegrees, longitude: (((firstLoc.longitude) as Double) + dX) as CLLocationDegrees)
 
@@ -177,11 +188,11 @@ class MapViewController: UIViewController, MKMapViewDelegate, overlayDelegate {
             testAngle = -0.1
         }
         
-        print("userLocation.node.location: \(userLocation.node.location)")
+//        print("userLocation.node.location: \(userLocation.node.location)")
         if isCloseEnough(0.25, trailAngle: trailAngle, testAngle: testAngle){
             print(true)
             if let neighbor = userLocation.node.neighbors.first {
-                print("neighbor.location: \(neighbor.location)")
+//                print("neighbor.location: \(neighbor.location)")
                 updateUserLocationTo(neighbor.location)
             }
             
@@ -189,7 +200,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, overlayDelegate {
             print(false)
         }
         
-        print("====================")
+//        print("====================")
     }
     
     func isCloseEnough(allowedErrorMargin: Double, trailAngle:Double, testAngle:Double) -> Bool {
@@ -220,28 +231,49 @@ class MapViewController: UIViewController, MKMapViewDelegate, overlayDelegate {
     
     func updateUserLocationTo(location:CLLocationCoordinate2D){
 
+        if let _ = userLocation, let first = userLocation.node {
+            let second = first.neighbors.first!
+            let third = second.neighbors.first!
+            
+            print(first.location)
+            print(second.location)
+            print(third.location)
+            
+        }
+
         if userLocation == nil {
             userLocation = UserAnnotation()
             userLocation.imageName = "loc"
         }
         
         if userLocation.node != nil && userLocation.node.location != nil{
-            print("old Loc: \(userLocation.node.location)")
+            
         }
         
-        if let index = annotations.indexOf(userLocation) {
-            annotations.removeAtIndex(index)
+        if annotations.count > 2 {
+            annotations.removeLast()
             userLocation.coordinate = location
             if let nodeIndex = trailGraph.nodes.indexOf(userLocation.node.neighbors.first!) {
                 userLocation.node = trailGraph.nodes[nodeIndex]
-                annotations[index] = userLocation
+                annotations.append(userLocation)
                 mapView.showAnnotations(annotations, animated: true)
+                print("new Loc: \(userLocation.node.location)")
             }
-        }
-        if userLocation.node != nil && userLocation.node.location != nil{
-            print("new Loc: \(userLocation.node.location)")
+
         }
         
+//        if let index = annotations.indexOf(userLocation) {
+//            annotations.removeAtIndex(index)
+//            userLocation.coordinate = location
+//            if let nodeIndex = trailGraph.nodes.indexOf(userLocation.node.neighbors.first!) {
+//                userLocation.node = trailGraph.nodes[nodeIndex]
+//                annotations[index] = userLocation
+//                mapView.showAnnotations(annotations, animated: true)
+//                print("new Loc: \(userLocation.node.location)")
+//            }
+//        }
+        
+        print("==============")
     }
     
     func updateTestLocationTo(location:CLLocationCoordinate2D){
@@ -284,7 +316,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, overlayDelegate {
             let trailNode = TrailNode()
             trailNode.location = coord
             if prevNode != nil {
-                trailNode.neighbors.append(prevNode)
+                prevNode.neighbors.append(trailNode)
+//                trailNode.neighbors.append(prevNode)
             }
 
             if !trailGraph.nodes.contains(trailNode) {

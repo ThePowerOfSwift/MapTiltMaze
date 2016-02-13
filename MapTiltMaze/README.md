@@ -9,3 +9,15 @@
 - lock image for locked levels
 - in app purchases for locked levels
 - only allow 2 pins/annotations
+
+
+-GameLevels 
+--[TrailGraph]
+
+-TrailGraph
+--[TrailNode]
+
+TrailNode
+--coordinate
+--[TrailNode] <-neighbors
+
