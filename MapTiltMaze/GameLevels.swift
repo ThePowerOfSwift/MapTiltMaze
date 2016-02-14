@@ -15,4 +15,6 @@ class GameLevels: NSObject {
         super.init()
         levels = [TrailGraph]()
     }
+    
+    
 }

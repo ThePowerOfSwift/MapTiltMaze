@@ -12,6 +12,9 @@ import MapKit
 class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, overlayDelegate {
 
     var map:MapView!
+    var overlay:OverlayView!
+    var game:GameLevels!
+    
 //    var annotations = [MKPointAnnotation]()
 //    var trailGraph: TrailGraph!
 //    var prevNode:TrailNode!
@@ -21,26 +24,37 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
 //    var testpolyLine:MKPolyline!
 //    var motionManager:CMMotionManager!
     
-    var overlay:OverlayView!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        //load map
         map = MapView(frame: self.view.bounds)
         map.delegate = self
         self.view.addSubview(map)
         
-        let longPressRec:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "pinLocation:")
-        longPressRec.minimumPressDuration = 0.5
-        map.addGestureRecognizer(longPressRec)
+        //drop pin on long press
+//        let longPressRec:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "pinLocation:")
+//        longPressRec.minimumPressDuration = 0.5
+//        map.addGestureRecognizer(longPressRec)
         
+        //add login and main menu
         overlay = OverlayView(frame: CGRectMake(0,self.view.frame.height - 50, self.view.frame.width, 50))
         overlay.delegate = self
         self.view.addSubview(overlay)
         overlay.initGameCenter()
         overlay.loadMainGameMenu()
+
+        //init game
+        game = GameLevels()
+        let trailGraph = TrailGraph()
+        let test = trailGraph.convertArrayOfEndPointsIntoArrayOfCoordinates(
+            [CLLocationCoordinate2D(latitude: 42.5240461369687, longitude: -112.207552427192),
+            CLLocationCoordinate2D(latitude: 42.5001962490471, longitude: -112.166066045599)])
+        
+        print(test)
         
         
+
     }
     
     func showGameCenterLogin(sender: UIViewController) {

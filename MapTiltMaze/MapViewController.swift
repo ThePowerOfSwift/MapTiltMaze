@@ -44,18 +44,21 @@ class MapViewController: UIViewController, MKMapViewDelegate, overlayDelegate {
     }
 
     func pinLocation(sender:UILongPressGestureRecognizer){
-        if sender.state != .Began {
-            return
+        if annotations.count < 3{
+            if sender.state != .Began {
+                return
+            }
+            let tappedPoint:CGPoint = sender.locationInView(mapView)
+            let tappedCoordinate:CLLocationCoordinate2D = mapView.convertPoint(tappedPoint, toCoordinateFromView: mapView)
+            let annotation = MKPointAnnotation()
+            
+            annotation.coordinate = tappedCoordinate
+            annotations.append(annotation)
+            mapView.showAnnotations(annotations, animated: true)
+            
+            drawRoute()
+
         }
-        let tappedPoint:CGPoint = sender.locationInView(mapView)
-        let tappedCoordinate:CLLocationCoordinate2D = mapView.convertPoint(tappedPoint, toCoordinateFromView: mapView)
-        let annotation = MKPointAnnotation()
-        
-        annotation.coordinate = tappedCoordinate
-        annotations.append(annotation)
-        mapView.showAnnotations(annotations, animated: true)
-        
-        drawRoute()
     }
     
     func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
@@ -99,6 +102,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, overlayDelegate {
     }
     
     func drawDirection(startPoint:CLLocationCoordinate2D, endPoint:CLLocationCoordinate2D){
+        print("startPoint \(startPoint)")
+        print("endPoint \(endPoint)")
         let startPlacemark:MKPlacemark = MKPlacemark(coordinate: startPoint, addressDictionary: nil)
         let endPlacemark:MKPlacemark = MKPlacemark(coordinate: endPoint, addressDictionary: nil)
         
