@@ -67,7 +67,35 @@ class MapView: MKMapView {
             index += 1
         }
     }
+    
+    func drawRoute(var routeCoordinates: [CLLocationCoordinate2D]){
+        self.removeOverlays(self.overlays)
+        
+        let padding:CGFloat = 50.0
+        let polyLine:MKPolyline = MKPolyline(coordinates: &routeCoordinates, count: routeCoordinates.count)
+        let visibleMapRect = mapRectThatFits(polyLine.boundingMapRect, edgePadding: UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding))
+        setRegion(MKCoordinateRegionForMapRect(visibleMapRect), animated: true)
 
+        var index = 0
+        let endpoints = annotations.count
+        while index < endpoints - 1 {
+            print(routeCoordinates.first!)
+            print(annotations.first?.coordinate)
+            drawDirection(polyLine)
+            index += 1
+        }
+    }
+    
+    func drawDirection(polyline: MKPolyline){
+        addOverlay(polyline, level: MKOverlayLevel.AboveRoads)
+        userAnnotation = UserAnnotation()
+        userAnnotation.updateUserLocationTo(self.annotations.first!.coordinate)
+        self.addAnnotation(self.userAnnotation)
+        self.showAnnotations(self.annotations, animated: true)
+        
+        processMotion()
+    }
+    
     func drawDirection(startPoint:CLLocationCoordinate2D, endPoint:CLLocationCoordinate2D){
         let startPlacemark:MKPlacemark = MKPlacemark(coordinate: startPoint, addressDictionary: nil)
         let endPlacemark:MKPlacemark = MKPlacemark(coordinate: endPoint, addressDictionary: nil)
@@ -100,20 +128,24 @@ class MapView: MKMapView {
                     self.userAnnotation.updateUserLocationTo(self.annotations.first!.coordinate)
                     self.addAnnotation(self.userAnnotation)
                     self.showAnnotations(self.annotations, animated: true)
-//                    
-                    self.motionManager = MotionManager()
-                    self.motionManager.accelerometerUpdateInterval = 0.1
-
-                    self.motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue()!, withHandler: { (accelerometerData, error) -> Void in
-                        if error == nil {
-                            self.processAccelerationData(dX: accelerometerData!.acceleration.x, dY: accelerometerData!.acceleration.y)
-                        } else {
-                            print(error!)
-                        }
-                    })
+                    
+                    self.processMotion()
                 }
             }
         }
+    }
+    
+    func processMotion(){
+        self.motionManager = MotionManager()
+        self.motionManager.accelerometerUpdateInterval = 0.1
+
+        self.motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue()!, withHandler: { (accelerometerData, error) -> Void in
+            if error == nil {
+                self.processAccelerationData(dX: accelerometerData!.acceleration.x, dY: accelerometerData!.acceleration.y)
+            } else {
+                print(error!)
+            }
+        })
     }
     
     func getRouteCoordinates(route:MKRoute) -> [CLLocationCoordinate2D]{

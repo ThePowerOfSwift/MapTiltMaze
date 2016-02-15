@@ -6,7 +6,6 @@
 //  Copyright © 2016 Stanley Chiang. All rights reserved.
 //
 
-import UIKit
 import MapKit
 
 class UserAnnotation: MKPointAnnotation {
@@ -20,7 +19,7 @@ class UserAnnotation: MKPointAnnotation {
     func updateUserLocationTo(location:CLLocationCoordinate2D){
 //        if let index = annotations.indexOf(userLocation) {
 //            annotations.removeAtIndex(index)
-//            coordinate = location
+            coordinate = location
 //            if let nodeIndex = trailGraph.nodes.indexOf(node.neighbors.first!) {
 //                node = trailGraph.nodes[nodeIndex]
 //                annotations[index] = userLocation

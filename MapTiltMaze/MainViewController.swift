@@ -64,11 +64,7 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
     func didGetCoordinates(var routeCoordinates: [CLLocationCoordinate2D]) {
         game.levels.last!.nodes = game.levels.last!.convertArrayOfCoordinatesIntoArrayOfTrailNodes(routeCoordinates)
         
-        map.drawRoute()
-        let padding:CGFloat = 50.0
-        let polyLine:MKPolyline = MKPolyline(coordinates: &routeCoordinates, count: routeCoordinates.count)
-        let visibleMapRect = map.mapRectThatFits(polyLine.boundingMapRect, edgePadding: UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding))
-        map.setRegion(MKCoordinateRegionForMapRect(visibleMapRect), animated: true)
+        map.drawRoute(routeCoordinates)
     }
     
     func showGameCenterLogin(sender: UIViewController) {
