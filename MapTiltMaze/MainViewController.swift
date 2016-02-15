@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, overlayDelegate {
+class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, overlayDelegate, trailGraphDelegate {
 
     var map:MapView!
     var overlay:OverlayView!
@@ -44,17 +44,31 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
         overlay.initGameCenter()
         overlay.loadMainGameMenu()
 
+        let GameModel = [[CLLocationCoordinate2D(latitude: 42.5240461369687, longitude: -112.207552427192),
+            CLLocationCoordinate2D(latitude: 42.5001962490471, longitude: -112.166066045599)]]
+        
         //init game
         game = GameLevels()
         let trailGraph = TrailGraph()
-        let test = trailGraph.convertArrayOfEndPointsIntoArrayOfCoordinates(
-            [CLLocationCoordinate2D(latitude: 42.5240461369687, longitude: -112.207552427192),
-            CLLocationCoordinate2D(latitude: 42.5001962490471, longitude: -112.166066045599)])
+        game.levels.append(trailGraph)
         
-        print(test)
+        trailGraph.delegate = self
+        for level in GameModel {
+            trailGraph.convertArrayOfEndPointsIntoArrayOfCoordinates(level)
+            map.pinLocation(coordinate: level[0])
+            map.pinLocation(coordinate: level[1])
+            return
+        }
+    }
+    
+    func didGetCoordinates(var routeCoordinates: [CLLocationCoordinate2D]) {
+        game.levels.last!.nodes = game.levels.last!.convertArrayOfCoordinatesIntoArrayOfTrailNodes(routeCoordinates)
         
-        
-
+        map.drawRoute()
+        let padding:CGFloat = 50.0
+        let polyLine:MKPolyline = MKPolyline(coordinates: &routeCoordinates, count: routeCoordinates.count)
+        let visibleMapRect = map.mapRectThatFits(polyLine.boundingMapRect, edgePadding: UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding))
+        map.setRegion(MKCoordinateRegionForMapRect(visibleMapRect), animated: true)
     }
     
     func showGameCenterLogin(sender: UIViewController) {
@@ -68,7 +82,7 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
             return
         }
         
-        map.pinLocation(sender)
+        map.pinLocation(sender: sender)
     
         if map.annotations.count > 1 {
             map.drawRoute()

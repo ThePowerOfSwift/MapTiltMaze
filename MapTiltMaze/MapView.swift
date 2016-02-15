@@ -30,12 +30,19 @@ class MapView: MKMapView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func pinLocation(sender:UILongPressGestureRecognizer){
+    func pinLocation(sender sender:UILongPressGestureRecognizer){
         let tappedPoint:CGPoint = sender.locationInView(self)
         let tappedCoordinate:CLLocationCoordinate2D = self.convertPoint(tappedPoint, toCoordinateFromView: self)
         let annotation = MKPointAnnotation()
         
         annotation.coordinate = tappedCoordinate
+        self.addAnnotation(annotation)
+        self.showAnnotations(annotations, animated: true)
+    }
+    
+    func pinLocation(coordinate coordinate: CLLocationCoordinate2D){
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coordinate
         self.addAnnotation(annotation)
         self.showAnnotations(annotations, animated: true)
     }
@@ -87,7 +94,6 @@ class MapView: MKMapView {
             if let routeCoordinates:[CLLocationCoordinate2D] = self.getRouteCoordinates(route) {
 //                self.updateTrailGraph(routeCoordinates)
                 self.addOverlay(route.polyline, level: MKOverlayLevel.AboveRoads)
-                
                 
                 if self.annotations.count > 1 {
                     self.userAnnotation = UserAnnotation()

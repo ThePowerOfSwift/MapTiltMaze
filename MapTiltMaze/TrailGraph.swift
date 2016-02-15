@@ -8,28 +8,29 @@
 
 import MapKit
 
+protocol trailGraphDelegate {
+    func didGetCoordinates(routeCoordinates: [CLLocationCoordinate2D])
+}
+
 class TrailGraph:NSObject {
     var nodes:[TrailNode]!
     var prevNode:TrailNode!
+    var delegate:trailGraphDelegate!
     
     override init() {
         super.init()
         nodes = [TrailNode]()
     }
     
-    func convertArrayOfEndPointsIntoArrayOfCoordinates(endPoints: [CLLocationCoordinate2D]) -> [CLLocationCoordinate2D]{
-        let coordinates = [CLLocationCoordinate2D]()
+    func convertArrayOfEndPointsIntoArrayOfCoordinates(endPoints: [CLLocationCoordinate2D]){
         var index = 0
         while index < endPoints.count - 1 {
             generateCoordinates(endPoints[index], endPoint: endPoints[index + 1])
             index += 1
         }
-        return coordinates
     }
     
-    
-    
-    func generateCoordinates(startPoint:CLLocationCoordinate2D, endPoint:CLLocationCoordinate2D) -> [CLLocationCoordinate2D]{
+    func generateCoordinates(startPoint:CLLocationCoordinate2D, endPoint:CLLocationCoordinate2D) {
         let startPlacemark:MKPlacemark = MKPlacemark(coordinate: startPoint, addressDictionary: nil)
         let endPlacemark:MKPlacemark = MKPlacemark(coordinate: endPoint, addressDictionary: nil)
         
@@ -41,8 +42,6 @@ class TrailGraph:NSObject {
         directionRequest.destination = endMapItem
         directionRequest.transportType = .Any
         
-        var coordinates = [CLLocationCoordinate2D]()
-        
         let directions = MKDirections(request: directionRequest)
         directions.calculateDirectionsWithCompletionHandler { (routeResponse, routeError) -> Void in
             guard let routeResponse = routeResponse else {
@@ -53,18 +52,16 @@ class TrailGraph:NSObject {
             }
             
             let route:MKRoute = routeResponse.routes[0]
-            coordinates = self.getRouteCoordinates(route)
+            self.getRouteCoordinates(route)
         }
-        return coordinates
     }
 
-    func getRouteCoordinates(route:MKRoute) -> [CLLocationCoordinate2D]{
+    func getRouteCoordinates(route:MKRoute) {
         let pointCount = route.polyline.pointCount
         var routeCoordinates: [CLLocationCoordinate2D] = Array(count: pointCount, repeatedValue: CLLocationCoordinate2D())
         route.polyline.getCoordinates(&routeCoordinates, range: NSMakeRange(0,pointCount))
-        return routeCoordinates
+        delegate.didGetCoordinates(routeCoordinates)
     }
-
     
     func convertArrayOfCoordinatesIntoArrayOfTrailNodes(coordinates: [CLLocationCoordinate2D]) -> [TrailNode]{
         for coord in coordinates {
