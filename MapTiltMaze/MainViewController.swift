@@ -14,7 +14,13 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
     var map:MapView!
     var overlay:OverlayView!
     var game:GameLevels!
-    
+    var trailGraph:TrailGraph!
+    var currentLevel:Int!
+    let GameModel = [
+        [CLLocationCoordinate2D(latitude: 42.5240461369687, longitude: -112.207552427192), CLLocationCoordinate2D(latitude: 42.5001962490471, longitude: -112.166066045599)],
+        [CLLocationCoordinate2D(latitude: 43.5240461369687, longitude: -113.207552427192), CLLocationCoordinate2D(latitude: 43.5001962490471, longitude: -113.166066045599)],
+        [CLLocationCoordinate2D(latitude: 44.5240461369687, longitude: -114.207552427192), CLLocationCoordinate2D(latitude: 44.5001962490471, longitude: -114.166066045599)],
+    ]
 //    var annotations = [MKPointAnnotation]()
 //    var trailGraph: TrailGraph!
 //    var prevNode:TrailNode!
@@ -44,26 +50,37 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
         overlay.initGameCenter()
         overlay.loadMainGameMenu()
 
-        let GameModel = [[CLLocationCoordinate2D(latitude: 42.5240461369687, longitude: -112.207552427192),
-            CLLocationCoordinate2D(latitude: 42.5001962490471, longitude: -112.166066045599)]]
+
         
         //init game
         game = GameLevels()
-        let trailGraph = TrailGraph()
+        trailGraph = TrailGraph()
         game.levels.append(trailGraph)
-        
         trailGraph.delegate = self
-        for level in GameModel {
-            trailGraph.convertArrayOfEndPointsIntoArrayOfCoordinates(level)
-            map.pinLocation(coordinate: level[0])
-            map.pinLocation(coordinate: level[1])
-            return
+        currentLevel = 0
+        setLevel(level: GameModel.first!)
+    }
+    
+    func setLevel(level level: [CLLocationCoordinate2D]){
+        trailGraph.convertArrayOfEndPointsIntoArrayOfCoordinates(level)
+        for endpoint in level {
+            map.pinLocation(coordinate: endpoint)
         }
     }
     
-    func didGetCoordinates(var routeCoordinates: [CLLocationCoordinate2D]) {
+    func updateLevel(direction: Int) {
+        let levelIndex = currentLevel + direction
+        if GameModel.isInBounds(levelIndex) {
+            map.clearMap()
+            setLevel(level: GameModel[levelIndex])
+            currentLevel = currentLevel + direction
+        } else {
+            print("out of bounds")
+        }
+    }
+    
+    func didGetCoordinates(routeCoordinates: [CLLocationCoordinate2D]) {
         game.levels.last!.nodes = game.levels.last!.convertArrayOfCoordinatesIntoArrayOfTrailNodes(routeCoordinates)
-        
         map.drawRoute(routeCoordinates)
     }
     
@@ -127,5 +144,14 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
 //        trailNode.location =
 //        trailNode.neighbors =
         return trailNode
+    }
+}
+
+extension Array {
+    func isInBounds(index: Int) -> Bool {
+        if index < 0 || index > self.count - 1 {
+            return false
+        }
+        return true
     }
 }

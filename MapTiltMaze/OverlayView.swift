@@ -11,6 +11,7 @@ import GameKit
 
 protocol overlayDelegate {
     func showGameCenterLogin(sender: UIViewController)
+    func updateLevel(direction:Int)
 }
 
 class OverlayView: UIView {
@@ -69,10 +70,12 @@ class OverlayView: UIView {
 
     func backActionMainMenu(sender: UIButton){
         print("back MainMenu")
+        delegate.updateLevel(-1)
     }
     
     func nextActionMainMenu(sender: UIButton){
         print("next MainMenu")
+        delegate.updateLevel(1)
     }
     
     func startActionMainMenu(sender: UIButton){

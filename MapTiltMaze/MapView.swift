@@ -225,4 +225,9 @@ class MapView: MKMapView {
         
         self.addOverlay(testpolyLine)
     }
+    
+    func clearMap(){
+        removeOverlays(overlays)
+        removeAnnotations(annotations)
+    }
 }

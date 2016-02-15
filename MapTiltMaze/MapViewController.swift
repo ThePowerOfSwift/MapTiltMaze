@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreMotion
 
-class MapViewController: UIViewController, MKMapViewDelegate, overlayDelegate {
+class MapViewController: UIViewController, MKMapViewDelegate {
 
     var mapView:MKMapView!
     var annotations = [MKPointAnnotation]()
@@ -36,7 +36,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, overlayDelegate {
         mapView.addGestureRecognizer(longPressRec)
 
         overlay = OverlayView(frame: CGRectMake(0,self.view.frame.height - 50, self.view.frame.width, 50))
-        overlay.delegate = self
+//        overlay.delegate = self
         self.view.addSubview(overlay)
         overlay.initGameCenter()
         overlay.loadMainGameMenu()
