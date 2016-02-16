@@ -73,28 +73,34 @@ class MapView: MKMapView {
         self.removeOverlays(self.overlays)
         
         let padding:CGFloat = 50.0
-        let polyLine:MKPolyline = MKPolyline(coordinates: &routeCoordinates, count: routeCoordinates.count)
-        let visibleMapRect = mapRectThatFits(polyLine.boundingMapRect, edgePadding: UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding))
+        let polyline:MKPolyline = MKPolyline(coordinates: &routeCoordinates, count: routeCoordinates.count)
+        let visibleMapRect = mapRectThatFits(polyline.boundingMapRect, edgePadding: UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding))
         setRegion(MKCoordinateRegionForMapRect(visibleMapRect), animated: true)
-
-        var index = 0
-        let endpoints = annotations.count
-        while index < endpoints - 1 {
-            drawDirection(polyLine)
-            index += 1
-        }
+        addOverlay(polyline, level: MKOverlayLevel.AboveRoads)
+        
+        adduserPin()
+//        var index = 0
+//        let endpoints = annotations.count
+//        while index < endpoints - 1 {
+//            drawDirection(polyline)
+//            index += 1
+//        }
     }
     
-    func drawDirection(polyline: MKPolyline){
-        addOverlay(polyline, level: MKOverlayLevel.AboveRoads)
+    func adduserPin(){
+        
         userAnnotation = UserAnnotation()
         //FIXME: get correct node
-//        let startNode = mapdelegate.getCurrentUserLocationNode()
-        userAnnotation.updateUserLocationTo(self.annotations.first!.coordinate)
+        let startNode = mapdelegate.getCurrentUserLocationNode()
+        userAnnotation.node = startNode
+        userAnnotation.updateUserLocationTo(startNode.location)
+//        userAnnotation.updateUserLocationTo(self.annotations.first!.coordinate)
         self.addAnnotation(self.userAnnotation)
         self.showAnnotations(self.annotations, animated: true)
         
     }
+    
+    
     
     func drawDirection(startPoint:CLLocationCoordinate2D, endPoint:CLLocationCoordinate2D){
         let startPlacemark:MKPlacemark = MKPlacemark(coordinate: startPoint, addressDictionary: nil)
@@ -196,10 +202,6 @@ class MapView: MKMapView {
             testLocation.imageName = "loc"
         }
 
-//        if let index = annotations.indexOf(testLocation) {
-//            annotations.removeAtIndex(index)
-//        }
-        
         testLocation.coordinate = location
         self.addAnnotation(testLocation)
         self.showAnnotations(annotations, animated: true)
@@ -214,10 +216,6 @@ class MapView: MKMapView {
             self.removeOverlay(testpolyLine)
         }
         testpolyLine = MKPolyline(coordinates: &coordinates, count: coordinates.count)
-        
-//        let padding:CGFloat = 50.0
-//        let visibleMapRect = self.mapRectThatFits(testpolyLine.boundingMapRect, edgePadding: UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding))
-//        self.setRegion(MKCoordinateRegionForMapRect(visibleMapRect), animated: true)
         
         self.addOverlay(testpolyLine)
     }

@@ -25,10 +25,6 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
         [CLLocationCoordinate2D(latitude: 43.5240461369687, longitude: -113.207552427192), CLLocationCoordinate2D(latitude: 43.5001962490471, longitude: -113.166066045599)],
         [CLLocationCoordinate2D(latitude: 44.5240461369687, longitude: -114.207552427192), CLLocationCoordinate2D(latitude: 44.5001962490471, longitude: -114.166066045599)],
     ]
-//    var prevNode:TrailNode!
-//    var userLocation:UserAnnotation!
-//    var testLocation:UserAnnotation!
-//    var testpolyLine:MKPolyline!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +32,7 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
         //load map
         map = MapView(frame: self.view.bounds)
         map.delegate = self
+        map.mapdelegate = self
         self.view.addSubview(map)
         
         //add login and main menu
@@ -85,9 +82,6 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
         }
         
         currentNode = game.levels[currentLevel].nodes.first!
-        print("start point: \(GameModel.first!.first!)")
-        print("currentLevel: \(currentLevel)")
-        print("currentNode: \(currentNode.location)")
         map.drawRoute(routeCoordinates)
     }
     
