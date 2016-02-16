@@ -9,7 +9,6 @@
 import MapKit
 
 protocol mapDelegate {
-//    func updateTrailGraph()
     func getFirstNodeForGivenLevel() -> TrailNode
     func getCurrentUserLocationNode() -> TrailNode
     func getNextNode() -> TrailNode
@@ -178,7 +177,7 @@ class MapView: MKMapView {
         
         let firstLoc:CLLocationCoordinate2D = currentNode.location
         let secondLoc:CLLocationCoordinate2D = nextNode.location
-    
+        
 //        let testLoc:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: (((firstLoc.latitude) as Double) + dY) as CLLocationDegrees, longitude: (((firstLoc.longitude) as Double) + dX) as CLLocationDegrees)
 //        updateTestLocationTo(testLoc)
 //        drawTestLine(a: firstLoc, b: testLoc)

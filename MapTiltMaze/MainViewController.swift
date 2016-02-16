@@ -74,6 +74,9 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
         if timer == nil { timer = Timer() }
         
         if timer.startTime == nil {
+            //switch to in game menu
+            overlay.hideMainMenu()
+            overlay.loadInGameMenu()
             map.processMotion()
             startTimer(sender)
             sender.setTitle("Stop", forState: UIControlState.Normal)
@@ -83,7 +86,11 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
     func stopMotion() {
         timer.stop()
         map.stopMotion()
-//        overlay.startButton.setTitle("Start", forState: UIControlState.Normal)
+        overlay.startButton.setTitle("Start", forState: UIControlState.Normal)
+    }
+    
+    func resetTimer() {
+        timer.reset()
     }
     
     func startTimer(sender: UIButton){

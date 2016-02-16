@@ -9,10 +9,12 @@
 - ~~tapping direction buttons resets map frame in view~~
 - ~~start accelerometer when start is pressed~~
 - ~~refactor for traversing trail with distributed classes and trail nodes~~
-- record time to finish
+- ~~record time to finish~~
+- save time to finish for each map
 - show level number on overlay
+- toggle in/out game overly menu
 - right above menu is fastest time
-- add grey overlay over entire view for start
 - lock image for locked levels
 - in app purchases for locked levels
 - rename project and app/bundle ids to Georollo
+- only allow main level navigation when next level is already loaded

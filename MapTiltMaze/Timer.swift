@@ -30,4 +30,9 @@ class Timer {
     func stop(){
         startTime = nil
     }
+    
+    func reset(){
+        stop()
+        start()
+    }
 }

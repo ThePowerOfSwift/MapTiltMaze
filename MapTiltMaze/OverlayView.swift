@@ -13,6 +13,8 @@ protocol overlayDelegate {
     func showGameCenterLogin(sender: UIViewController)
     func updateLevel(direction:Int)
     func play(sender: UIButton)
+    func resetTimer()
+    func stopMotion()
 }
 
 class OverlayView: UIView {
@@ -22,6 +24,9 @@ class OverlayView: UIView {
     var backButton:UIButton!
     var nextButton:UIButton!
     var startButton:UIButton!
+    
+    var resetButton:UIButton!
+    var backOrNextButton:UIButton!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -46,6 +51,14 @@ class OverlayView: UIView {
     }
     
     func loadMainGameMenu(){
+        
+        if backButton != nil && startButton != nil && nextButton != nil {
+            backButton.alpha = 1
+            startButton.alpha = 1
+            nextButton.alpha = 1
+            return
+        }
+        
         let oneThirdWidth = frame.width / 3.0
         
         backButton = UIButton(frame: CGRectMake(0, 0, oneThirdWidth, frame.height))
@@ -80,17 +93,27 @@ class OverlayView: UIView {
         delegate.play(sender)
     }
     
+    func hideMainMenu(){
+        backButton.alpha = 0
+        startButton.alpha = 0
+        nextButton.alpha = 0
+    }
+    
     func loadInGameMenu(){
-        var resetButton:UIButton!
-        var backButton:UIButton!
+        
+        if backOrNextButton != nil && resetButton != nil {
+            backOrNextButton.alpha = 1
+            resetButton.alpha = 1
+            return
+        }
         
         let oneHalfWidth = frame.width / 2.0
         
-        backButton = UIButton(frame: CGRectMake(0, 0, oneHalfWidth, frame.height))
-        backButton.setTitle("Back", forState: .Normal)
-        backButton.backgroundColor = UIColor.purpleColor()
-        backButton.addTarget(self, action: "backActionInGame:", forControlEvents: UIControlEvents.TouchUpInside)
-        self.addSubview(backButton)
+        backOrNextButton = UIButton(frame: CGRectMake(0, 0, oneHalfWidth, frame.height))
+        backOrNextButton.setTitle("Back", forState: .Normal)
+        backOrNextButton.backgroundColor = UIColor.purpleColor()
+        backOrNextButton.addTarget(self, action: "backActionInGame:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.addSubview(backOrNextButton)
         
         resetButton = UIButton(frame: CGRectMake(oneHalfWidth, 0, oneHalfWidth, frame.height))
         resetButton.setTitle("Reset", forState: .Normal)
@@ -102,9 +125,20 @@ class OverlayView: UIView {
     
     func backActionInGame(sender: UIButton){
         print("back InGame")
+        delegate.stopMotion()
+        delegate.updateLevel(0)
+        hideInGameMenu()
+        loadMainGameMenu()
     }
     
-    func startActionInGame(sender: UIButton){
+    func resetActionInGame(sender: UIButton){
         print("reset InGame")
+        delegate.updateLevel(0)
+        delegate.resetTimer()
+    }
+    
+    func hideInGameMenu(){
+        backOrNextButton.alpha = 0
+        resetButton.alpha = 0
     }
 }
