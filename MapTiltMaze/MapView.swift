@@ -93,7 +93,7 @@ class MapView: MKMapView {
         self.addAnnotation(self.userAnnotation)
         self.showAnnotations(self.annotations, animated: true)
         
-        processMotion()
+        
     }
     
     func drawDirection(startPoint:CLLocationCoordinate2D, endPoint:CLLocationCoordinate2D){
@@ -156,13 +156,13 @@ class MapView: MKMapView {
     }
     
     func processAccelerationData(dX dX:Double, dY: Double){
-//        let currentNode = mapdelegate.getCurrentUserLocationNode()
+        let currentNode = mapdelegate.getCurrentUserLocationNode()
         
-//        let firstLoc:CLLocationCoordinate2D = currentNode.location
-//        let secondLoc:CLLocationCoordinate2D = currentNode.neighbors.first!.location
+        let firstLoc:CLLocationCoordinate2D = currentNode.location
+        let secondLoc:CLLocationCoordinate2D = currentNode.neighbors.first!.location
     
-        let firstLoc:CLLocationCoordinate2D = annotations.first!.coordinate
-        let secondLoc:CLLocationCoordinate2D = annotations.last!.coordinate
+//        let firstLoc:CLLocationCoordinate2D = annotations.first!.coordinate
+//        let secondLoc:CLLocationCoordinate2D = annotations.last!.coordinate
         
         let testLoc:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: (((firstLoc.latitude) as Double) + dY) as CLLocationDegrees, longitude: (((firstLoc.longitude) as Double) + dX) as CLLocationDegrees)
         
@@ -179,7 +179,6 @@ class MapView: MKMapView {
         if trailAngle == 0 {trailAngle = 0.1}
         if testAngle == 0 {testAngle = -0.1}
         
-        //        print("userLocation.node.location: \(userLocation.node.location)")
         if motionManager.isCloseEnough(0.25, trailAngle: trailAngle, testAngle: testAngle){
             print(true)
             //            if let neighbor = userLocation.node.neighbors.first {

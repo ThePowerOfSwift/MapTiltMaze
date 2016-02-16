@@ -35,11 +35,11 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         longPressRec.minimumPressDuration = 0.5
         mapView.addGestureRecognizer(longPressRec)
 
-        overlay = OverlayView(frame: CGRectMake(0,self.view.frame.height - 50, self.view.frame.width, 50))
+//        overlay = OverlayView(frame: CGRectMake(0,self.view.frame.height - 50, self.view.frame.width, 50))
 //        overlay.delegate = self
-        self.view.addSubview(overlay)
-        overlay.initGameCenter()
-        overlay.loadMainGameMenu()
+//        self.view.addSubview(overlay)
+//        overlay.initGameCenter()
+//        overlay.loadMainGameMenu()
 
     }
 
