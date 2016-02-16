@@ -8,7 +8,7 @@
 - ~~hardcoded map level coordinates~~
 - ~~tapping direction buttons resets map frame in view~~
 - ~~start accelerometer when start is pressed~~
-- refactor for traversing trail with distributed classes and trail nodes
+- ~~refactor for traversing trail with distributed classes and trail nodes~~
 - record time to finish
 - show level number on overlay
 - right above menu is fastest time

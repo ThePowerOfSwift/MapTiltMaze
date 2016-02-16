@@ -18,6 +18,12 @@ protocol overlayDelegate {
 class OverlayView: UIView {
     
     var delegate:overlayDelegate!
+
+    var timer = Timer()
+    
+    var backButton:UIButton!
+    var nextButton:UIButton!
+    var startButton:UIButton!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -35,7 +41,6 @@ class OverlayView: UIView {
             // Show the Login Prompt for Game Center
             GKLocalPlayer.localPlayer().authenticateHandler = {(viewController, error) -> Void in
                 if viewController != nil {
-                    //self.scene!.gamePaused = true
                     self.delegate.showGameCenterLogin(viewController!)
                 }
             }
@@ -43,10 +48,6 @@ class OverlayView: UIView {
     }
     
     func loadMainGameMenu(){
-        var backButton:UIButton!
-        var nextButton:UIButton!
-        var startButton:UIButton!
-        
         let oneThirdWidth = frame.width / 3.0
         
         backButton = UIButton(frame: CGRectMake(0, 0, oneThirdWidth, frame.height))
@@ -78,7 +79,29 @@ class OverlayView: UIView {
     }
     
     func startActionMainMenu(sender: UIButton){
+        if timer.startTime == nil {
+            startTimer()
+        } else {
+            timer.stop()
+            startButton.setTitle("Start", forState: UIControlState.Normal)
+        }
+        
         delegate.play()
+    }
+    
+    func startTimer(){
+        NSTimer.scheduledTimerWithTimeInterval(0.1, target: self,
+            selector: "updateTimerReadOutLabel:", userInfo: nil, repeats: true)
+        timer.start()
+    }
+    
+    func updateTimerReadOutLabel(time: NSTimer){
+        if let _ = timer.startTime {
+            let timerReadOut = timer.convertElapsedTimeToString(timer.showCurrentElapsedTime())
+            startButton.setTitle(timerReadOut, forState: UIControlState.Normal)
+        }else {
+            time.invalidate()
+        }
     }
     
     func loadInGameMenu(){

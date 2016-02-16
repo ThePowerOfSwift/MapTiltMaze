@@ -14,6 +14,7 @@
 		F615E15F1C6B1BFC0095CD7F /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615E15E1C6B1BFC0095CD7F /* MapViewController.swift */; };
 		F615E1641C6B1BFC0095CD7F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F615E1631C6B1BFC0095CD7F /* Assets.xcassets */; };
 		F615E1671C6B1BFC0095CD7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F615E1651C6B1BFC0095CD7F /* LaunchScreen.storyboard */; };
+		F648FD471C73A95F00AFC989 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F648FD461C73A95F00AFC989 /* Timer.swift */; };
 		F67343851C6E54AB0005960C /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = F67343841C6E54AB0005960C /* README.md */; };
 		F67343871C6E673B0005960C /* OverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67343861C6E673B0005960C /* OverlayView.swift */; };
 		F67343891C6E6FC30005960C /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F67343881C6E6FC30005960C /* GameKit.framework */; };
@@ -34,6 +35,7 @@
 		F615E1631C6B1BFC0095CD7F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F615E1661C6B1BFC0095CD7F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F615E1681C6B1BFC0095CD7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F648FD461C73A95F00AFC989 /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		F67343841C6E54AB0005960C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F67343861C6E673B0005960C /* OverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverlayView.swift; sourceTree = "<group>"; };
 		F67343881C6E6FC30005960C /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
@@ -84,6 +86,7 @@
 				F615E15E1C6B1BFC0095CD7F /* MapViewController.swift */,
 				F68076261C6ED5D00004E80B /* MotionManager.swift */,
 				F68076241C6ECCF00004E80B /* MapView.swift */,
+				F648FD461C73A95F00AFC989 /* Timer.swift */,
 				F673438A1C6E81E20005960C /* GameLevels.swift */,
 				F6015CA61C6DAF80007E109F /* TrailGraph.swift */,
 				F6015CA81C6DAF9C007E109F /* TrailNode.swift */,
@@ -181,6 +184,7 @@
 				F67343851C6E54AB0005960C /* README.md in Sources */,
 				F6015CA91C6DAF9C007E109F /* TrailNode.swift in Sources */,
 				F673438B1C6E81E20005960C /* GameLevels.swift in Sources */,
+				F648FD471C73A95F00AFC989 /* Timer.swift in Sources */,
 				F67343871C6E673B0005960C /* OverlayView.swift in Sources */,
 				F615E15F1C6B1BFC0095CD7F /* MapViewController.swift in Sources */,
 				F68076271C6ED5D00004E80B /* MotionManager.swift in Sources */,
