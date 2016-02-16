@@ -71,21 +71,21 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
     }
     
     func play(sender: UIButton) {
-        print("play")
-        map.processMotion()
-        if timer == nil {
-            timer = Timer()
-        }
+        if timer == nil { timer = Timer() }
         
         if timer.startTime == nil {
+            map.processMotion()
             startTimer(sender)
             sender.setTitle("Stop", forState: UIControlState.Normal)
-        } else {
-            timer.stop()
-            sender.setTitle("Start", forState: UIControlState.Normal)
         }
     }
 
+    func stopMotion() {
+        timer.stop()
+        map.stopMotion()
+//        overlay.startButton.setTitle("Start", forState: UIControlState.Normal)
+    }
+    
     func startTimer(sender: UIButton){
         NSTimer.scheduledTimerWithTimeInterval(0.1, target: self,
             selector: "updateTimerReadOutLabel:", userInfo: sender, repeats: true)

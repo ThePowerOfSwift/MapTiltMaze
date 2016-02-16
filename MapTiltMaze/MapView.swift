@@ -13,6 +13,7 @@ protocol mapDelegate {
     func getFirstNodeForGivenLevel() -> TrailNode
     func getCurrentUserLocationNode() -> TrailNode
     func getNextNode() -> TrailNode
+    func stopMotion()
 }
 
 class MapView: MKMapView {
@@ -91,7 +92,6 @@ class MapView: MKMapView {
     func adduserPin(){
         
         userAnnotation = UserAnnotation()
-        //FIXME: get correct node
         let startNode = mapdelegate.getCurrentUserLocationNode()
         userAnnotation.node = startNode
         userAnnotation.updateUserLocationTo(location: startNode.location)
@@ -154,6 +154,10 @@ class MapView: MKMapView {
         })
     }
     
+    func stopMotion(){
+        motionManager.stopAccelerometerUpdates()
+    }
+    
     func getRouteCoordinates(route:MKRoute) -> [CLLocationCoordinate2D]{
         let pointCount = route.polyline.pointCount
         var routeCoordinates: [CLLocationCoordinate2D] = Array(count: pointCount, repeatedValue: CLLocationCoordinate2D())
@@ -165,7 +169,7 @@ class MapView: MKMapView {
         
         if userAnnotation.node.neighbors.first == nil {
             print("you won")
-            motionManager.stopAccelerometerUpdates()
+            mapdelegate.stopMotion()
             return
         }
 
@@ -175,8 +179,7 @@ class MapView: MKMapView {
         let firstLoc:CLLocationCoordinate2D = currentNode.location
         let secondLoc:CLLocationCoordinate2D = nextNode.location
     
-        let testLoc:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: (((firstLoc.latitude) as Double) + dY) as CLLocationDegrees, longitude: (((firstLoc.longitude) as Double) + dX) as CLLocationDegrees)
-        
+//        let testLoc:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: (((firstLoc.latitude) as Double) + dY) as CLLocationDegrees, longitude: (((firstLoc.longitude) as Double) + dX) as CLLocationDegrees)
 //        updateTestLocationTo(testLoc)
 //        drawTestLine(a: firstLoc, b: testLoc)
         
@@ -196,8 +199,6 @@ class MapView: MKMapView {
         } else {
             print(false)
         }
-        
-//        print("====================")
     }
 
     func updateTestLocationTo(location:CLLocationCoordinate2D){
