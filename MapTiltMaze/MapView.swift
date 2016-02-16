@@ -10,6 +10,7 @@ import MapKit
 
 protocol mapDelegate {
 //    func updateTrailGraph()
+    func getFirstNodeForGivenLevel() -> TrailNode
     func getCurrentUserLocationNode() -> TrailNode
 }
 
@@ -79,8 +80,6 @@ class MapView: MKMapView {
         var index = 0
         let endpoints = annotations.count
         while index < endpoints - 1 {
-            print(routeCoordinates.first!)
-            print(annotations.first?.coordinate)
             drawDirection(polyLine)
             index += 1
         }
@@ -89,10 +88,11 @@ class MapView: MKMapView {
     func drawDirection(polyline: MKPolyline){
         addOverlay(polyline, level: MKOverlayLevel.AboveRoads)
         userAnnotation = UserAnnotation()
+        //FIXME: get correct node
+//        let startNode = mapdelegate.getCurrentUserLocationNode()
         userAnnotation.updateUserLocationTo(self.annotations.first!.coordinate)
         self.addAnnotation(self.userAnnotation)
         self.showAnnotations(self.annotations, animated: true)
-        
         
     }
     
@@ -161,9 +161,6 @@ class MapView: MKMapView {
         let firstLoc:CLLocationCoordinate2D = currentNode.location
         let secondLoc:CLLocationCoordinate2D = currentNode.neighbors.first!.location
     
-//        let firstLoc:CLLocationCoordinate2D = annotations.first!.coordinate
-//        let secondLoc:CLLocationCoordinate2D = annotations.last!.coordinate
-        
         let testLoc:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: (((firstLoc.latitude) as Double) + dY) as CLLocationDegrees, longitude: (((firstLoc.longitude) as Double) + dX) as CLLocationDegrees)
         
         updateTestLocationTo(testLoc)

@@ -48,9 +48,9 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
         //init game
         game = GameLevels()
         currentTrailGraph = TrailGraph()
-        game.levels.append(currentTrailGraph)
         currentTrailGraph.delegate = self
         currentLevel = 0
+        currentNode = nil
         setLevel(level: GameModel.first!)
     }
     
@@ -78,7 +78,16 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
     }
     
     func didGetCoordinates(routeCoordinates: [CLLocationCoordinate2D]) {
-        game.levels.last!.nodes = game.levels.last!.convertArrayOfCoordinatesIntoArrayOfTrailNodes(routeCoordinates)
+        if !game.levels.isInBounds(currentLevel) {
+            let trailGraph = TrailGraph()
+            game.levels.append(trailGraph)
+            game.levels[currentLevel].nodes = game.levels.last!.convertArrayOfCoordinatesIntoArrayOfTrailNodes(routeCoordinates)
+        }
+        
+        currentNode = game.levels[currentLevel].nodes.first!
+        print("start point: \(GameModel.first!.first!)")
+        print("currentLevel: \(currentLevel)")
+        print("currentNode: \(currentNode.location)")
         map.drawRoute(routeCoordinates)
     }
     
@@ -138,11 +147,13 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
     }
     
     func getCurrentUserLocationNode() -> TrailNode {
-        let trailNode = TrailNode()
-//        trailNode.location =
-//        trailNode.neighbors =
-        return trailNode
+        return currentNode
     }
+    
+    func getFirstNodeForGivenLevel() -> TrailNode {
+        return currentNode
+    }
+    
 }
 
 extension Array {
