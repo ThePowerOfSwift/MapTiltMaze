@@ -16,7 +16,7 @@ class UserAnnotation: MKPointAnnotation {
         self.imageName = "loc"
     }
     
-    func updateUserLocationTo(location:CLLocationCoordinate2D){
+    func updateUserLocationTo(location location:CLLocationCoordinate2D){
 //        if let index = annotations.indexOf(userLocation) {
 //            annotations.removeAtIndex(index)
             coordinate = location
@@ -26,5 +26,10 @@ class UserAnnotation: MKPointAnnotation {
 //                mapView.showAnnotations(annotations, animated: true)
 //            }
 //        }
+    }
+    
+    func updateUserLocationTo(node node: TrailNode){
+        self.node = node
+        coordinate = node.location
     }
 }

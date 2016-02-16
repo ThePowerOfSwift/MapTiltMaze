@@ -148,6 +148,11 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
         return currentNode
     }
     
+    func getNextNode() -> TrailNode {
+        print(currentNode.neighbors)
+        return currentNode.neighbors.first!
+    }
+    
 }
 
 extension Array {

@@ -12,6 +12,7 @@ protocol mapDelegate {
 //    func updateTrailGraph()
     func getFirstNodeForGivenLevel() -> TrailNode
     func getCurrentUserLocationNode() -> TrailNode
+    func getNextNode() -> TrailNode
 }
 
 class MapView: MKMapView {
@@ -93,8 +94,7 @@ class MapView: MKMapView {
         //FIXME: get correct node
         let startNode = mapdelegate.getCurrentUserLocationNode()
         userAnnotation.node = startNode
-        userAnnotation.updateUserLocationTo(startNode.location)
-//        userAnnotation.updateUserLocationTo(self.annotations.first!.coordinate)
+        userAnnotation.updateUserLocationTo(location: startNode.location)
         self.addAnnotation(self.userAnnotation)
         self.showAnnotations(self.annotations, animated: true)
         
@@ -131,7 +131,7 @@ class MapView: MKMapView {
                 
                 if self.annotations.count > 1 {
                     self.userAnnotation = UserAnnotation()
-                    self.userAnnotation.updateUserLocationTo(self.annotations.first!.coordinate)
+                    self.userAnnotation.updateUserLocationTo(location: self.annotations.first!.coordinate)
                     self.addAnnotation(self.userAnnotation)
                     self.showAnnotations(self.annotations, animated: true)
                     
@@ -162,15 +162,23 @@ class MapView: MKMapView {
     }
     
     func processAccelerationData(dX dX:Double, dY: Double){
-        let currentNode = mapdelegate.getCurrentUserLocationNode()
+        
+        if userAnnotation.node.neighbors.first == nil {
+            print("you won")
+            motionManager.stopAccelerometerUpdates()
+            return
+        }
+
+        let currentNode = userAnnotation.node
+        let nextNode = currentNode.neighbors.first!
         
         let firstLoc:CLLocationCoordinate2D = currentNode.location
-        let secondLoc:CLLocationCoordinate2D = currentNode.neighbors.first!.location
+        let secondLoc:CLLocationCoordinate2D = nextNode.location
     
         let testLoc:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: (((firstLoc.latitude) as Double) + dY) as CLLocationDegrees, longitude: (((firstLoc.longitude) as Double) + dX) as CLLocationDegrees)
         
-        updateTestLocationTo(testLoc)
-        drawTestLine(a: firstLoc, b: testLoc)
+//        updateTestLocationTo(testLoc)
+//        drawTestLine(a: firstLoc, b: testLoc)
         
         let trailNodeOffsetX = secondLoc.latitude - firstLoc.latitude
         let trailNodeOffsetY = secondLoc.longitude - firstLoc.longitude
@@ -184,16 +192,12 @@ class MapView: MKMapView {
         
         if motionManager.isCloseEnough(0.25, trailAngle: trailAngle, testAngle: testAngle){
             print(true)
-            //            if let neighbor = userLocation.node.neighbors.first {
-            //                print("neighbor.location: \(neighbor.location)")
-            //                updateUserLocationTo(neighbor.location)
-            //            }
-            
+            userAnnotation.updateUserLocationTo(node: nextNode)
         } else {
             print(false)
         }
         
-        print("====================")
+//        print("====================")
     }
 
     func updateTestLocationTo(location:CLLocationCoordinate2D){
