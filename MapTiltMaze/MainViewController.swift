@@ -19,6 +19,7 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
     var currentNode:TrailNode!
     var currentLevel:Int!
 
+    var timer:Timer!
     
     let GameModel = [
         [CLLocationCoordinate2D(latitude: 42.5240461369687, longitude: -112.207552427192), CLLocationCoordinate2D(latitude: 42.5001962490471, longitude: -112.166066045599)],
@@ -69,9 +70,36 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
         }
     }
     
-    func play() {
+    func play(sender: UIButton) {
         print("play")
         map.processMotion()
+        if timer == nil {
+            timer = Timer()
+        }
+        
+        if timer.startTime == nil {
+            startTimer(sender)
+            sender.setTitle("Stop", forState: UIControlState.Normal)
+        } else {
+            timer.stop()
+            sender.setTitle("Start", forState: UIControlState.Normal)
+        }
+    }
+
+    func startTimer(sender: UIButton){
+        NSTimer.scheduledTimerWithTimeInterval(0.1, target: self,
+            selector: "updateTimerReadOutLabel:", userInfo: sender, repeats: true)
+        timer.start()
+    }
+    
+    func updateTimerReadOutLabel(time: NSTimer){
+        if let _ = timer.startTime {
+            let timerReadOut = timer.convertElapsedTimeToString(timer.showCurrentElapsedTime())
+            let timerButton:UIButton = time.userInfo as! UIButton
+            timerButton.setTitle(timerReadOut, forState: UIControlState.Normal)
+        }else {
+            time.invalidate()
+        }
     }
     
     func didGetCoordinates(routeCoordinates: [CLLocationCoordinate2D]) {

@@ -12,14 +12,12 @@ import GameKit
 protocol overlayDelegate {
     func showGameCenterLogin(sender: UIViewController)
     func updateLevel(direction:Int)
-    func play()
+    func play(sender: UIButton)
 }
 
 class OverlayView: UIView {
     
     var delegate:overlayDelegate!
-
-    var timer = Timer()
     
     var backButton:UIButton!
     var nextButton:UIButton!
@@ -79,29 +77,7 @@ class OverlayView: UIView {
     }
     
     func startActionMainMenu(sender: UIButton){
-        if timer.startTime == nil {
-            startTimer()
-        } else {
-            timer.stop()
-            startButton.setTitle("Start", forState: UIControlState.Normal)
-        }
-        
-        delegate.play()
-    }
-    
-    func startTimer(){
-        NSTimer.scheduledTimerWithTimeInterval(0.1, target: self,
-            selector: "updateTimerReadOutLabel:", userInfo: nil, repeats: true)
-        timer.start()
-    }
-    
-    func updateTimerReadOutLabel(time: NSTimer){
-        if let _ = timer.startTime {
-            let timerReadOut = timer.convertElapsedTimeToString(timer.showCurrentElapsedTime())
-            startButton.setTitle(timerReadOut, forState: UIControlState.Normal)
-        }else {
-            time.invalidate()
-        }
+        delegate.play(sender)
     }
     
     func loadInGameMenu(){
