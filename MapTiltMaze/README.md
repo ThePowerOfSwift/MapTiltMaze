@@ -10,10 +10,12 @@
 - ~~start accelerometer when start is pressed~~
 - ~~refactor for traversing trail with distributed classes and trail nodes~~
 - ~~record time to finish~~
-- save time to finish for each map
+- ~~toggle in/out game overly menu~~
 - show level number on overlay
-- toggle in/out game overly menu
-- right above menu is fastest time
+- show record for level on main menu
+- show timer for level on in game menu
+- save time to finish for each map
+
 - lock image for locked levels
 - in app purchases for locked levels
 - rename project and app/bundle ids to Georollo

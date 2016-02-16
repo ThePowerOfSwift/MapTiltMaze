@@ -37,7 +37,8 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
         self.view.addSubview(map)
         
         //add login and main menu
-        overlay = OverlayView(frame: CGRectMake(0,self.view.frame.height - 50, self.view.frame.width, 50))
+//        overlay = OverlayView(frame: CGRectMake(0,self.view.frame.height - 50, self.view.frame.width, 50))
+        overlay = OverlayView(frame: self.view.frame)
         overlay.delegate = self
         self.view.addSubview(overlay)
         overlay.initGameCenter()

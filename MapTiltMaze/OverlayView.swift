@@ -50,6 +50,16 @@ class OverlayView: UIView {
         }
     }
     
+    override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
+//        http://stackoverflow.com/questions/4661589/how-to-get-touches-when-parent-view-has-userinteractionenabled-set-to-no-in-ios?rq=1
+        let hitView = super.hitTest(point, withEvent: event)
+        if hitView == self {
+            return nil
+        }else {
+            return hitView
+        }
+    }
+    
     func loadMainGameMenu(){
         
         if backButton != nil && startButton != nil && nextButton != nil {
@@ -61,19 +71,19 @@ class OverlayView: UIView {
         
         let oneThirdWidth = frame.width / 3.0
         
-        backButton = UIButton(frame: CGRectMake(0, 0, oneThirdWidth, frame.height))
+        backButton = UIButton(frame: CGRectMake(0, frame.height - 50, oneThirdWidth, 50))
         backButton.setTitle("Back", forState: .Normal)
         backButton.backgroundColor = UIColor.purpleColor()
         backButton.addTarget(self, action: "backActionMainMenu:", forControlEvents: UIControlEvents.TouchUpInside)
         self.addSubview(backButton)
         
-        startButton = UIButton(frame: CGRectMake(oneThirdWidth, 0, oneThirdWidth, frame.height))
+        startButton = UIButton(frame: CGRectMake(oneThirdWidth, frame.height - 50, oneThirdWidth, 50))
         startButton.setTitle("Start", forState: .Normal)
         startButton.backgroundColor = UIColor.greenColor()
         startButton.addTarget(self, action: "startActionMainMenu:", forControlEvents: UIControlEvents.TouchUpInside)
         self.addSubview(startButton)
         
-        nextButton = UIButton(frame: CGRectMake(oneThirdWidth*2, 0, oneThirdWidth, frame.height))
+        nextButton = UIButton(frame: CGRectMake(oneThirdWidth*2, frame.height - 50, oneThirdWidth, 50))
         nextButton.setTitle("Next", forState: .Normal)
         nextButton.backgroundColor = UIColor.blueColor()
         nextButton.addTarget(self, action: "nextActionMainMenu:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -109,13 +119,13 @@ class OverlayView: UIView {
         
         let oneHalfWidth = frame.width / 2.0
         
-        backOrNextButton = UIButton(frame: CGRectMake(0, 0, oneHalfWidth, frame.height))
+        backOrNextButton = UIButton(frame: CGRectMake(0, frame.height - 50, oneHalfWidth, 50))
         backOrNextButton.setTitle("Back", forState: .Normal)
         backOrNextButton.backgroundColor = UIColor.purpleColor()
         backOrNextButton.addTarget(self, action: "backActionInGame:", forControlEvents: UIControlEvents.TouchUpInside)
         self.addSubview(backOrNextButton)
         
-        resetButton = UIButton(frame: CGRectMake(oneHalfWidth, 0, oneHalfWidth, frame.height))
+        resetButton = UIButton(frame: CGRectMake(oneHalfWidth, frame.height - 50, oneHalfWidth, 50))
         resetButton.setTitle("Reset", forState: .Normal)
         resetButton.backgroundColor = UIColor.greenColor()
         resetButton.addTarget(self, action: "resetActionInGame:", forControlEvents: UIControlEvents.TouchUpInside)
