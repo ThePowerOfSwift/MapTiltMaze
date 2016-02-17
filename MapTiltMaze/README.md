@@ -11,10 +11,12 @@
 - ~~refactor for traversing trail with distributed classes and trail nodes~~
 - ~~record time to finish~~
 - ~~toggle in/out game overly menu~~
-- show level number on overlay
-- show record for level on main menu
-- show timer for level on in game menu
+- ~~show level number on overlay~~
+- ~~bug: if user finishes game, then resets, the user can move along the map, timer should still be working though~~
+- ~~bug: pressing reset now messes with userlocation dot: doesn't clear it properly~~
+- ~~show timer for level on in game menu~~
 - save time to finish for each map
+- show record for level on main menu
 
 - lock image for locked levels
 - in app purchases for locked levels

@@ -13,6 +13,7 @@ protocol mapDelegate {
     func getCurrentUserLocationNode() -> TrailNode
     func getNextNode() -> TrailNode
     func stopMotion()
+    func recordWin()
 }
 
 class MapView: MKMapView {
@@ -168,6 +169,7 @@ class MapView: MKMapView {
         
         if userAnnotation.node.neighbors.first == nil {
             print("you won")
+            mapdelegate.recordWin()
             mapdelegate.stopMotion()
             return
         }

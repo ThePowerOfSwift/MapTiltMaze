@@ -17,7 +17,7 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
     
     var currentTrailGraph:TrailGraph!
     var currentNode:TrailNode!
-    var currentLevel:Int!
+    var currentLevel:Int = 1
 
     var timer:Timer!
     
@@ -60,12 +60,17 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
         }
     }
     
+    func getLevel() -> Int {
+        return currentLevel
+    }
+    
     func updateLevel(direction: Int) {
         let levelIndex = currentLevel + direction
         if GameModel.isInBounds(levelIndex) {
             map.clearMap()
             setLevel(level: GameModel[levelIndex])
             currentLevel = levelIndex
+            overlay.levelValueLabel.text = "\(currentLevel+1)"
         } else {
             print("out of bounds")
         }
@@ -84,13 +89,20 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
         }
     }
 
+    func recordWin() {
+        let timerReadOut = timer.showCurrentElapsedTime()
+        print(timerReadOut)
+        overlay.recordTime(level: currentLevel, record: Int64(timerReadOut))
+    }
+    
     func stopMotion() {
         timer.stop()
         map.stopMotion()
         overlay.startButton.setTitle("Start", forState: UIControlState.Normal)
     }
     
-    func resetTimer() {
+    func resetGame() {
+        map.processMotion()
         timer.reset()
     }
     
@@ -103,8 +115,7 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
     func updateTimerReadOutLabel(time: NSTimer){
         if let _ = timer.startTime {
             let timerReadOut = timer.convertElapsedTimeToString(timer.showCurrentElapsedTime())
-            let timerButton:UIButton = time.userInfo as! UIButton
-            timerButton.setTitle(timerReadOut, forState: UIControlState.Normal)
+            overlay.recordValueLabel.text = timerReadOut
         }else {
             time.invalidate()
         }
@@ -114,7 +125,8 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
         if !game.levels.isInBounds(currentLevel) {
             let trailGraph = TrailGraph()
             game.levels.append(trailGraph)
-            game.levels[currentLevel].nodes = game.levels.last!.convertArrayOfCoordinatesIntoArrayOfTrailNodes(routeCoordinates)
+            let trailNodes = game.levels[currentLevel].convertArrayOfCoordinatesIntoArrayOfTrailNodes(routeCoordinates)
+            game.levels[currentLevel].nodes = trailNodes
         }
         
         currentNode = game.levels[currentLevel].nodes.first!

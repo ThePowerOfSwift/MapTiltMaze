@@ -10,6 +10,9 @@ import UIKit
 import MapKit
 import CoreMotion
 
+/*
+Now Using MainViewController. This is Mainly for MISC. Code Reuse, But Should Support Building a Map In Game
+*/
 class MapViewController: UIViewController, MKMapViewDelegate {
 
     var mapView:MKMapView!

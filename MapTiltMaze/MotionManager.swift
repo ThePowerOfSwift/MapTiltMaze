@@ -16,9 +16,7 @@ class MotionManager: CMMotionManager {
     
     func isCloseEnough(allowedErrorMargin: Double, trailAngle:Double, testAngle:Double) -> Bool {
         let error = fabs(( trailAngle - testAngle ) / trailAngle)
-        
-        print(error)
-        
+//        print(error)
         if error < allowedErrorMargin {
             return true
         }

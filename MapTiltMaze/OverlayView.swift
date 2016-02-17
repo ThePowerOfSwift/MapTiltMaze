@@ -12,8 +12,9 @@ import GameKit
 protocol overlayDelegate {
     func showGameCenterLogin(sender: UIViewController)
     func updateLevel(direction:Int)
+    func getLevel() -> Int
     func play(sender: UIButton)
-    func resetTimer()
+    func resetGame()
     func stopMotion()
 }
 
@@ -28,6 +29,14 @@ class OverlayView: UIView {
     var resetButton:UIButton!
     var backOrNextButton:UIButton!
     
+    var levelTextLabel:UILabel!
+    var levelValueLabel:UILabel!
+    
+    var recordTextLabel:UILabel!
+    var recordValueLabel:UILabel!
+    
+    let elementHeight:CGFloat = 50
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -38,16 +47,37 @@ class OverlayView: UIView {
     
     // Initialize Game Center
     func initGameCenter() {
+        let localPlayer = GKLocalPlayer.localPlayer()
         // Check if user is already authenticated in game center
-        if GKLocalPlayer.localPlayer().authenticated == false {
+        if !localPlayer.authenticated {
             
             // Show the Login Prompt for Game Center
-            GKLocalPlayer.localPlayer().authenticateHandler = {(viewController, error) -> Void in
+            localPlayer.authenticateHandler = {(viewController, error) -> Void in
                 if viewController != nil {
                     self.delegate.showGameCenterLogin(viewController!)
+                }else {
+                    localPlayer.loadDefaultLeaderboardIdentifierWithCompletionHandler({ (leaderboardIdentifier, error) -> Void in
+                        if error != nil {
+                            print(error)
+                        }else {
+                            print(leaderboardIdentifier!)
+                        }
+                    })
                 }
             }
         }
+    }
+    
+    func recordTime(level level: Int, record:Int64){
+        let score = GKScore(leaderboardIdentifier: "level1ID")
+        score.value = record
+//        GKScore.reportScores([score]) { (error) -> Void in
+//            if error != nil {
+//                print(error)
+//            }else {
+//                print("Score reported: \(score.value)")
+//            }
+//        }
     }
     
     override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
@@ -71,23 +101,48 @@ class OverlayView: UIView {
         
         let oneThirdWidth = frame.width / 3.0
         
-        backButton = UIButton(frame: CGRectMake(0, frame.height - 50, oneThirdWidth, 50))
+        backButton = UIButton(frame: CGRectMake(0, frame.height - elementHeight, oneThirdWidth, elementHeight))
         backButton.setTitle("Back", forState: .Normal)
-        backButton.backgroundColor = UIColor.purpleColor()
+        backButton.backgroundColor = UIColor.clearColor()
+        backButton.setTitleColor(UIColor.purpleColor(), forState: UIControlState.Normal)
         backButton.addTarget(self, action: "backActionMainMenu:", forControlEvents: UIControlEvents.TouchUpInside)
         self.addSubview(backButton)
         
-        startButton = UIButton(frame: CGRectMake(oneThirdWidth, frame.height - 50, oneThirdWidth, 50))
+        startButton = UIButton(frame: CGRectMake(oneThirdWidth, frame.height - elementHeight, oneThirdWidth, elementHeight))
         startButton.setTitle("Start", forState: .Normal)
-        startButton.backgroundColor = UIColor.greenColor()
+        startButton.backgroundColor = UIColor.clearColor()
+        startButton.setTitleColor(UIColor.greenColor(), forState: UIControlState.Normal)
         startButton.addTarget(self, action: "startActionMainMenu:", forControlEvents: UIControlEvents.TouchUpInside)
         self.addSubview(startButton)
         
-        nextButton = UIButton(frame: CGRectMake(oneThirdWidth*2, frame.height - 50, oneThirdWidth, 50))
+        nextButton = UIButton(frame: CGRectMake(oneThirdWidth*2, frame.height - elementHeight, oneThirdWidth, elementHeight))
         nextButton.setTitle("Next", forState: .Normal)
-        nextButton.backgroundColor = UIColor.blueColor()
+        nextButton.backgroundColor = UIColor.clearColor()
+        nextButton.setTitleColor(UIColor.blueColor(), forState: UIControlState.Normal)
         nextButton.addTarget(self, action: "nextActionMainMenu:", forControlEvents: UIControlEvents.TouchUpInside)
         self.addSubview(nextButton)
+        
+        let currentLevel = delegate.getLevel()
+        levelValueLabel = UILabel(frame: CGRectMake(0,frame.height - 2 * elementHeight, frame.width / 2.0, elementHeight))
+        levelValueLabel.text = "\(currentLevel)"
+        levelValueLabel.textAlignment = .Center
+        addSubview(levelValueLabel)
+        
+        levelTextLabel = UILabel(frame: CGRectMake(0,frame.height - 3 * elementHeight, frame.width / 2.0, elementHeight))
+        levelTextLabel.text = "Level"
+        levelTextLabel.textAlignment = .Center
+        addSubview(levelTextLabel)
+        
+        recordValueLabel = UILabel(frame: CGRectMake(frame.width / 2.0,frame.height - 2 * elementHeight, frame.width / 2.0, elementHeight))
+        recordValueLabel.text = "high score"
+        recordValueLabel.textAlignment = .Center
+        addSubview(recordValueLabel)
+        
+        
+        recordTextLabel = UILabel(frame: CGRectMake(frame.width / 2.0,frame.height - 3 * elementHeight, frame.width / 2.0, elementHeight))
+        recordTextLabel.text = "Record"
+        recordTextLabel.textAlignment = .Center
+        addSubview(recordTextLabel)
         
     }
 
@@ -119,13 +174,13 @@ class OverlayView: UIView {
         
         let oneHalfWidth = frame.width / 2.0
         
-        backOrNextButton = UIButton(frame: CGRectMake(0, frame.height - 50, oneHalfWidth, 50))
+        backOrNextButton = UIButton(frame: CGRectMake(0, frame.height - elementHeight, oneHalfWidth, elementHeight))
         backOrNextButton.setTitle("Back", forState: .Normal)
         backOrNextButton.backgroundColor = UIColor.purpleColor()
         backOrNextButton.addTarget(self, action: "backActionInGame:", forControlEvents: UIControlEvents.TouchUpInside)
         self.addSubview(backOrNextButton)
         
-        resetButton = UIButton(frame: CGRectMake(oneHalfWidth, frame.height - 50, oneHalfWidth, 50))
+        resetButton = UIButton(frame: CGRectMake(oneHalfWidth, frame.height - elementHeight, oneHalfWidth, elementHeight))
         resetButton.setTitle("Reset", forState: .Normal)
         resetButton.backgroundColor = UIColor.greenColor()
         resetButton.addTarget(self, action: "resetActionInGame:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -136,6 +191,7 @@ class OverlayView: UIView {
     func backActionInGame(sender: UIButton){
         print("back InGame")
         delegate.stopMotion()
+        recordValueLabel.text = "high score"
         delegate.updateLevel(0)
         hideInGameMenu()
         loadMainGameMenu()
@@ -143,8 +199,9 @@ class OverlayView: UIView {
     
     func resetActionInGame(sender: UIButton){
         print("reset InGame")
+        recordValueLabel.text = "0 : 0 : 0"
         delegate.updateLevel(0)
-        delegate.resetTimer()
+        delegate.resetGame()
     }
     
     func hideInGameMenu(){

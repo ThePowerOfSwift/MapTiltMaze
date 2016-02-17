@@ -13,7 +13,6 @@ class Timer {
     
     func showCurrentElapsedTime() -> NSTimeInterval{
         if let startTime = startTime {
-            print(convertElapsedTimeToString(-startTime.timeIntervalSinceNow))
             return -startTime.timeIntervalSinceNow
         }
         return 0
