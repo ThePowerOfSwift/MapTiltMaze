@@ -90,9 +90,8 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
     }
 
     func recordWin() {
-        let timerReadOut = timer.showCurrentElapsedTime()
-        print(timerReadOut)
-        overlay.recordTime(level: currentLevel, record: Int64(timerReadOut))
+        let timerReadOut:NSTimeInterval = timer.showCurrentElapsedTime()
+        overlay.recordTime(level: currentLevel, record: Int64(timerReadOut * 100))
     }
     
     func stopMotion() {

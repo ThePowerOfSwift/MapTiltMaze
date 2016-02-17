@@ -63,6 +63,20 @@ class OverlayView: UIView {
                             print(leaderboardIdentifier!)
                         }
                     })
+                    /////
+                    let leaderboardRequest = GKLeaderboard() as GKLeaderboard!
+                    leaderboardRequest.identifier = "level1ID"
+                    if leaderboardRequest != nil {
+                        leaderboardRequest.loadScoresWithCompletionHandler({ (score, error) -> Void in
+                            if error != nil {
+                                print(error)
+                            } else {
+                                let myscore:[GKScore] = score!
+                                print(myscore.first!)
+                            }
+                        })
+                    }
+                    //////
                 }
             }
         }
@@ -70,14 +84,34 @@ class OverlayView: UIView {
     
     func recordTime(level level: Int, record:Int64){
         let score = GKScore(leaderboardIdentifier: "level1ID")
-        score.value = record
-//        GKScore.reportScores([score]) { (error) -> Void in
-//            if error != nil {
-//                print(error)
-//            }else {
-//                print("Score reported: \(score.value)")
-//            }
-//        }
+        score.value = record //5470
+        GKScore.reportScores([score]) { (error) -> Void in
+            if error != nil {
+                print(error)
+            }else {
+                print("Score reported: \(score.value)")  //Score reported: 5470
+            }
+        }
+        
+        /////
+        let leaderboardRequest = GKLeaderboard() as GKLeaderboard!
+        leaderboardRequest.identifier = "level1ID"
+        if leaderboardRequest != nil {
+            leaderboardRequest.loadScoresWithCompletionHandler({ (score, error) -> Void in
+                if error != nil {
+                    print(error)
+                } else {
+                    let myscore:[GKScore] = score!
+                    print(myscore.first!)
+                    
+                    /*
+                    <GKScore: 0x141919b10>player:playerID:G:187675264 alias:stanchiang23 rank:1 date:2016-02-17 08:41:16 +0000 value:0 formattedValue:0:00:00.00 context:0x0 leaderboard:level1ID group:(null)
+                    */
+                }
+            })
+        }
+        //////
+
     }
     
     override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
