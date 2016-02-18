@@ -19,7 +19,7 @@ class Timer {
     }
     
     func convertElapsedTimeToString(elapsedTime:NSTimeInterval) -> String {
-        return "\(Int(elapsedTime / 60)) : \(Int(elapsedTime % 60)) : \(Int(elapsedTime * 10 % 10))"
+        return "\(Int(elapsedTime / 60)) : \(Int(elapsedTime % 60)).\(Int(elapsedTime * 10 % 10))"
     }
     
     func start(){

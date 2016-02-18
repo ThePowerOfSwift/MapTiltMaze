@@ -37,6 +37,8 @@ class OverlayView: UIView {
     
     let elementHeight:CGFloat = 50
     
+    var records:[Int:String] = [Int:String]()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -63,55 +65,45 @@ class OverlayView: UIView {
                             print(leaderboardIdentifier!)
                         }
                     })
-                    /////
-                    let leaderboardRequest = GKLeaderboard() as GKLeaderboard!
-                    leaderboardRequest.identifier = "level1ID"
-                    if leaderboardRequest != nil {
-                        leaderboardRequest.loadScoresWithCompletionHandler({ (score, error) -> Void in
-                            if error != nil {
-                                print(error)
-                            } else {
-                                let myscore:[GKScore] = score!
-                                print(myscore.first!)
-                            }
-                        })
-                    }
-                    //////
+                    self.loadLeaderBoard(level: 1)
+                    self.loadLeaderBoard(level: 2)
+                    self.loadLeaderBoard(level: 3)
                 }
             }
         }
     }
     
     func recordTime(level level: Int, record:Int64){
-        let score = GKScore(leaderboardIdentifier: "level1ID")
-        score.value = record //5470
+        let score = GKScore(leaderboardIdentifier: "level\(level)ID")
+        score.value = record
         GKScore.reportScores([score]) { (error) -> Void in
             if error != nil {
                 print(error)
             }else {
-                print("Score reported: \(score.value)")  //Score reported: 5470
+                print("Score reported: \(score.value)")
+                let time = record / 100
+                self.records.updateValue("\(Int(time / 60)) : \(Int(time % 60)).\(Int(time * 10 % 10))", forKey: level)
             }
         }
-        
-        /////
+    }
+    
+    func loadLeaderBoard(level level:Int){
         let leaderboardRequest = GKLeaderboard() as GKLeaderboard!
-        leaderboardRequest.identifier = "level1ID"
+        leaderboardRequest.identifier = "level\(level)ID"
         if leaderboardRequest != nil {
             leaderboardRequest.loadScoresWithCompletionHandler({ (score, error) -> Void in
                 if error != nil {
                     print(error)
                 } else {
-                    let myscore:[GKScore] = score!
-                    print(myscore.first!)
-                    
-                    /*
-                    <GKScore: 0x141919b10>player:playerID:G:187675264 alias:stanchiang23 rank:1 date:2016-02-17 08:41:16 +0000 value:0 formattedValue:0:00:00.00 context:0x0 leaderboard:level1ID group:(null)
-                    */
+                    if let myscore:[GKScore] = score {
+                        self.records.updateValue(myscore.first!.formattedValue!, forKey: level)
+                        print(self.records)
+                    } else {
+                        self.recordTime(level: level, record: 10000)
+                    }
                 }
             })
         }
-        //////
-
     }
     
     override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
@@ -168,7 +160,8 @@ class OverlayView: UIView {
         addSubview(levelTextLabel)
         
         recordValueLabel = UILabel(frame: CGRectMake(frame.width / 2.0,frame.height - 2 * elementHeight, frame.width / 2.0, elementHeight))
-        recordValueLabel.text = "high score"
+        
+        recordValueLabel.text = "Loading..."
         recordValueLabel.textAlignment = .Center
         addSubview(recordValueLabel)
         
@@ -182,14 +175,28 @@ class OverlayView: UIView {
 
     func backActionMainMenu(sender: UIButton){
         delegate.updateLevel(-1)
+        recordValueLabel.text = getRecordValue()
     }
-    
+
     func nextActionMainMenu(sender: UIButton){
         delegate.updateLevel(1)
+        recordValueLabel.text = getRecordValue()
     }
     
     func startActionMainMenu(sender: UIButton){
         delegate.play(sender)
+    }
+    
+    func getRecordValue() -> String{
+        let currentLevel = delegate.getLevel()
+        var recordString = "Loading..."
+        for (k,v) in records {
+            if k == currentLevel + 1 {
+                recordString = v
+                break
+            }
+        }
+        return recordString
     }
     
     func hideMainMenu(){
@@ -225,7 +232,9 @@ class OverlayView: UIView {
     func backActionInGame(sender: UIButton){
         print("back InGame")
         delegate.stopMotion()
-        recordValueLabel.text = "high score"
+        
+        recordValueLabel.text = "Loading..."
+        
         delegate.updateLevel(0)
         hideInGameMenu()
         loadMainGameMenu()
@@ -233,7 +242,7 @@ class OverlayView: UIView {
     
     func resetActionInGame(sender: UIButton){
         print("reset InGame")
-        recordValueLabel.text = "0 : 0 : 0"
+        recordValueLabel.text = "00:00:00"
         delegate.updateLevel(0)
         delegate.resetGame()
     }

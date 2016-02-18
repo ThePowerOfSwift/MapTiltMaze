@@ -37,7 +37,6 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
         self.view.addSubview(map)
         
         //add login and main menu
-//        overlay = OverlayView(frame: CGRectMake(0,self.view.frame.height - 50, self.view.frame.width, 50))
         overlay = OverlayView(frame: self.view.frame)
         overlay.delegate = self
         self.view.addSubview(overlay)
@@ -91,7 +90,7 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
 
     func recordWin() {
         let timerReadOut:NSTimeInterval = timer.showCurrentElapsedTime()
-        overlay.recordTime(level: currentLevel, record: Int64(timerReadOut * 100))
+        overlay.recordTime(level: currentLevel + 1, record: Int64(timerReadOut * 100))
     }
     
     func stopMotion() {
@@ -106,7 +105,7 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
     }
     
     func startTimer(sender: UIButton){
-        NSTimer.scheduledTimerWithTimeInterval(0.1, target: self,
+        NSTimer.scheduledTimerWithTimeInterval(0.01, target: self,
             selector: "updateTimerReadOutLabel:", userInfo: sender, repeats: true)
         timer.start()
     }
