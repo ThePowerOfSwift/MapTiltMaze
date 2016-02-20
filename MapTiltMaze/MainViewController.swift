@@ -25,6 +25,7 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
         [CLLocationCoordinate2D(latitude: 42.5240461369687, longitude: -112.207552427192), CLLocationCoordinate2D(latitude: 42.5001962490471, longitude: -112.166066045599)],
         [CLLocationCoordinate2D(latitude: 43.5240461369687, longitude: -113.207552427192), CLLocationCoordinate2D(latitude: 43.5001962490471, longitude: -113.166066045599)],
         [CLLocationCoordinate2D(latitude: 44.5240461369687, longitude: -114.207552427192), CLLocationCoordinate2D(latitude: 44.5001962490471, longitude: -114.166066045599)],
+        [CLLocationCoordinate2D(latitude: 46.5240461369687, longitude: -116.207552427192), CLLocationCoordinate2D(latitude: 46.5001962490471, longitude: -116.166066045599)],
     ]
     
     override func viewDidLoad() {
@@ -60,6 +61,7 @@ class MainViewController: UIViewController, MKMapViewDelegate, mapDelegate, over
     }
     
     func getLevel() -> Int {
+        print(currentLevel)
         return currentLevel
     }
     

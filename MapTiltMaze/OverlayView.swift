@@ -29,6 +29,8 @@ class OverlayView: UIView {
     var resetButton:UIButton!
     var backOrNextButton:UIButton!
     
+    var purchaseButton:UIButton!
+    
     var levelTextLabel:UILabel!
     var levelValueLabel:UILabel!
     
@@ -172,15 +174,25 @@ class OverlayView: UIView {
         addSubview(recordTextLabel)
         
     }
-
+    
     func backActionMainMenu(sender: UIButton){
         delegate.updateLevel(-1)
         recordValueLabel.text = getRecordValue()
+        checkIfLevelLocked()
     }
 
     func nextActionMainMenu(sender: UIButton){
         delegate.updateLevel(1)
         recordValueLabel.text = getRecordValue()
+        checkIfLevelLocked()
+    }
+    
+    func checkIfLevelLocked() {
+        if delegate.getLevel() + 1 == 4 {
+            addLockedLevelViews()
+        }else {
+            removeAddLockedLevelViews()
+        }
     }
     
     func startActionMainMenu(sender: UIButton){
@@ -250,5 +262,33 @@ class OverlayView: UIView {
     func hideInGameMenu(){
         backOrNextButton.alpha = 0
         resetButton.alpha = 0
+    }
+    
+    func addLockedLevelViews(){
+        self.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)
+        startButton.userInteractionEnabled = false
+        
+        if purchaseButton != nil {
+            purchaseButton.alpha = 1
+            return
+        }
+        
+        purchaseButton = UIButton()
+        purchaseButton.frame = CGRect(origin: CGPointMake(superview!.frame.width/2.0, superview!.frame.height/2.0), size: CGSize(width: 200, height: 100))
+        purchaseButton.setTitle("Buy Map: $.99", forState: UIControlState.Normal)
+        purchaseButton.addTarget(self, action: "purchase:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.addSubview(purchaseButton)
+    }
+    
+    func removeAddLockedLevelViews(){
+        self.backgroundColor = UIColor.clearColor()
+        startButton.userInteractionEnabled = true
+        if purchaseButton != nil {
+            self.purchaseButton.alpha = 0
+        }
+    }
+    
+    func purchase(sender: UIButton){
+        print("purchasing")
     }
 }
