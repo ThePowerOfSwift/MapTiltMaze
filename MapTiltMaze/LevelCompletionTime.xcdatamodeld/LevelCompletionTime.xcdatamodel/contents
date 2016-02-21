@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="14F1509" minimumToolsVersion="Xcode 7.0">
+    <entity name="CanPlay" syncable="YES">
+        <attribute name="level1" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="level2" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="level3" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="level4" optional="YES" attributeType="Boolean" syncable="YES"/>
+    </entity>
+    <entity name="Time" syncable="YES">
+        <attribute name="level1" optional="YES" attributeType="Double" defaultValueString="0" syncable="YES"/>
+        <attribute name="level2" optional="YES" attributeType="Double" defaultValueString="0" syncable="YES"/>
+        <attribute name="level3" optional="YES" attributeType="Double" defaultValueString="0" syncable="YES"/>
+        <attribute name="level4" optional="YES" attributeType="Double" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Time" positionX="-63" positionY="-18" width="128" height="105"/>
+        <element name="CanPlay" positionX="-54" positionY="18" width="128" height="105"/>
+    </elements>
+</model>

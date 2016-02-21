@@ -11,7 +11,6 @@
 		F6015CA91C6DAF9C007E109F /* TrailNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6015CA81C6DAF9C007E109F /* TrailNode.swift */; };
 		F6015CAB1C6DAFD3007E109F /* UserAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6015CAA1C6DAFD3007E109F /* UserAnnotation.swift */; };
 		F615E15D1C6B1BFC0095CD7F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615E15C1C6B1BFC0095CD7F /* AppDelegate.swift */; };
-		F615E15F1C6B1BFC0095CD7F /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615E15E1C6B1BFC0095CD7F /* MapViewController.swift */; };
 		F615E1641C6B1BFC0095CD7F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F615E1631C6B1BFC0095CD7F /* Assets.xcassets */; };
 		F615E1671C6B1BFC0095CD7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F615E1651C6B1BFC0095CD7F /* LaunchScreen.storyboard */; };
 		F648FD471C73A95F00AFC989 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F648FD461C73A95F00AFC989 /* Timer.swift */; };
@@ -23,6 +22,7 @@
 		F68076211C6EBCBB0004E80B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68076201C6EBCBB0004E80B /* MainViewController.swift */; };
 		F68076251C6ECCF00004E80B /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68076241C6ECCF00004E80B /* MapView.swift */; };
 		F68076271C6ED5D00004E80B /* MotionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68076261C6ED5D00004E80B /* MotionManager.swift */; };
+		F68D15221C79ADFF007820C1 /* LevelCompletionTime.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F68D15201C79ADFF007820C1 /* LevelCompletionTime.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,7 +31,6 @@
 		F6015CAA1C6DAFD3007E109F /* UserAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAnnotation.swift; sourceTree = "<group>"; };
 		F615E1591C6B1BFC0095CD7F /* MapTiltMaze.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapTiltMaze.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F615E15C1C6B1BFC0095CD7F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		F615E15E1C6B1BFC0095CD7F /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		F615E1631C6B1BFC0095CD7F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F615E1661C6B1BFC0095CD7F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F615E1681C6B1BFC0095CD7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -44,6 +43,7 @@
 		F68076201C6EBCBB0004E80B /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		F68076241C6ECCF00004E80B /* MapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		F68076261C6ED5D00004E80B /* MotionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionManager.swift; sourceTree = "<group>"; };
+		F68D15211C79ADFF007820C1 /* LevelCompletionTime.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LevelCompletionTime.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,8 +82,8 @@
 			children = (
 				F615E15C1C6B1BFC0095CD7F /* AppDelegate.swift */,
 				F67343861C6E673B0005960C /* OverlayView.swift */,
+				F68D15201C79ADFF007820C1 /* LevelCompletionTime.xcdatamodeld */,
 				F68076201C6EBCBB0004E80B /* MainViewController.swift */,
-				F615E15E1C6B1BFC0095CD7F /* MapViewController.swift */,
 				F68076261C6ED5D00004E80B /* MotionManager.swift */,
 				F68076241C6ECCF00004E80B /* MapView.swift */,
 				F648FD461C73A95F00AFC989 /* Timer.swift */,
@@ -183,10 +183,10 @@
 			files = (
 				F67343851C6E54AB0005960C /* README.md in Sources */,
 				F6015CA91C6DAF9C007E109F /* TrailNode.swift in Sources */,
+				F68D15221C79ADFF007820C1 /* LevelCompletionTime.xcdatamodeld in Sources */,
 				F673438B1C6E81E20005960C /* GameLevels.swift in Sources */,
 				F648FD471C73A95F00AFC989 /* Timer.swift in Sources */,
 				F67343871C6E673B0005960C /* OverlayView.swift in Sources */,
-				F615E15F1C6B1BFC0095CD7F /* MapViewController.swift in Sources */,
 				F68076271C6ED5D00004E80B /* MotionManager.swift in Sources */,
 				F6015CAB1C6DAFD3007E109F /* UserAnnotation.swift in Sources */,
 				F68076211C6EBCBB0004E80B /* MainViewController.swift in Sources */,
@@ -341,6 +341,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		F68D15201C79ADFF007820C1 /* LevelCompletionTime.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				F68D15211C79ADFF007820C1 /* LevelCompletionTime.xcdatamodel */,
+			);
+			currentVersion = F68D15211C79ADFF007820C1 /* LevelCompletionTime.xcdatamodel */;
+			path = LevelCompletionTime.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = F615E1511C6B1BFC0095CD7F /* Project object */;
 }
