@@ -13,13 +13,14 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var level:Level!
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         window?.rootViewController = MainViewController()
         window?.makeKeyAndVisible()
         // Override point for customization after application launch.
+        loadCoreData()
         return true
     }
 
@@ -50,12 +51,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     lazy var applicationDocumentsDirectory: NSURL = {
         // The directory the application uses to store the Core Data store file. This code uses a directory named "com.stan.Luxyy" in the application's documents Application Support directory.
         let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+        print(urls)
         return urls[urls.count-1]
     }()
     
     lazy var managedObjectModel: NSManagedObjectModel = {
         // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
-        let modelURL = NSBundle.mainBundle().URLForResource("Luxyy", withExtension: "momd")!
+        let modelURL = NSBundle.mainBundle().URLForResource("Level", withExtension: "momd")!
         return NSManagedObjectModel(contentsOfURL: modelURL)!
     }()
     
@@ -106,6 +108,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 abort()
             }
         }
+    }
+    
+    func loadCoreData(){
+        // Create Entity Description
+        let entityDescription = NSEntityDescription.entityForName("Level", inManagedObjectContext: self.managedObjectContext)
+        level = Level(entity: entityDescription!, insertIntoManagedObjectContext: self.managedObjectContext)
+        level.loadLevels()
+        print("core data loaded")
     }
 }
 
