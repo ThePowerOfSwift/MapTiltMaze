@@ -13,14 +13,14 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var level:Level!
+//    var level:Level!
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         window?.rootViewController = MainViewController()
         window?.makeKeyAndVisible()
         // Override point for customization after application launch.
-        loadCoreData()
+        loadNSUserDefaults()
         return true
     }
 
@@ -110,12 +110,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func loadCoreData(){
-        // Create Entity Description
-        let entityDescription = NSEntityDescription.entityForName("Level", inManagedObjectContext: self.managedObjectContext)
-        level = Level(entity: entityDescription!, insertIntoManagedObjectContext: self.managedObjectContext)
-        level.loadLevels()
-        print("core data loaded")
+    func loadNSUserDefaults(){
+        let defaultsManager = UserDefaultsManager()
+        defaultsManager.deleteLevel(levelNumber: 1)
+        print("defaults complete")
     }
 }
 

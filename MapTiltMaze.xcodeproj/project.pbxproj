@@ -22,6 +22,7 @@
 		F68076211C6EBCBB0004E80B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68076201C6EBCBB0004E80B /* MainViewController.swift */; };
 		F68076251C6ECCF00004E80B /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68076241C6ECCF00004E80B /* MapView.swift */; };
 		F68076271C6ED5D00004E80B /* MotionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68076261C6ED5D00004E80B /* MotionManager.swift */; };
+		F68B6B961C7C0829006D6764 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B6B951C7C0829006D6764 /* UserDefaultsManager.swift */; };
 		F68D15221C79ADFF007820C1 /* Level.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F68D15201C79ADFF007820C1 /* Level.xcdatamodeld */; };
 		F68D15351C7A500B007820C1 /* Level+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68D15331C7A500B007820C1 /* Level+CoreDataProperties.swift */; };
 		F68D15361C7A500B007820C1 /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68D15341C7A500B007820C1 /* Level.swift */; };
@@ -45,6 +46,7 @@
 		F68076201C6EBCBB0004E80B /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		F68076241C6ECCF00004E80B /* MapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		F68076261C6ED5D00004E80B /* MotionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionManager.swift; sourceTree = "<group>"; };
+		F68B6B951C7C0829006D6764 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		F68D15211C79ADFF007820C1 /* Level.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Level.xcdatamodel; sourceTree = "<group>"; };
 		F68D15331C7A500B007820C1 /* Level+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Level+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		F68D15341C7A500B007820C1 /* Level.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				F615E15C1C6B1BFC0095CD7F /* AppDelegate.swift */,
+				F68B6B951C7C0829006D6764 /* UserDefaultsManager.swift */,
 				F67343861C6E673B0005960C /* OverlayView.swift */,
 				F68D15201C79ADFF007820C1 /* Level.xcdatamodeld */,
 				F68076201C6EBCBB0004E80B /* MainViewController.swift */,
@@ -198,6 +201,7 @@
 				F68D15361C7A500B007820C1 /* Level.swift in Sources */,
 				F6015CAB1C6DAFD3007E109F /* UserAnnotation.swift in Sources */,
 				F68076211C6EBCBB0004E80B /* MainViewController.swift in Sources */,
+				F68B6B961C7C0829006D6764 /* UserDefaultsManager.swift in Sources */,
 				F68076251C6ECCF00004E80B /* MapView.swift in Sources */,
 				F6015CA71C6DAF80007E109F /* TrailGraph.swift in Sources */,
 				F615E15D1C6B1BFC0095CD7F /* AppDelegate.swift in Sources */,
