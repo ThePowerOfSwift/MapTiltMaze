@@ -49,7 +49,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func loadNSUserDefaults(){
         let defaultsManager = UserDefaultsManager()
         defaultsManager.deleteLevel(levelNumber: 1)
-        print("defaults complete")
     }
 }
 

@@ -16,7 +16,6 @@
 		F648FD471C73A95F00AFC989 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F648FD461C73A95F00AFC989 /* Timer.swift */; };
 		F67343851C6E54AB0005960C /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = F67343841C6E54AB0005960C /* README.md */; };
 		F67343871C6E673B0005960C /* OverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67343861C6E673B0005960C /* OverlayView.swift */; };
-		F67343891C6E6FC30005960C /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F67343881C6E6FC30005960C /* GameKit.framework */; };
 		F673438B1C6E81E20005960C /* GameLevels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F673438A1C6E81E20005960C /* GameLevels.swift */; };
 		F680761F1C6EAD4D0004E80B /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F680761E1C6EAD4D0004E80B /* StoreKit.framework */; };
 		F68076211C6EBCBB0004E80B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68076201C6EBCBB0004E80B /* MainViewController.swift */; };
@@ -37,7 +36,6 @@
 		F648FD461C73A95F00AFC989 /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		F67343841C6E54AB0005960C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F67343861C6E673B0005960C /* OverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverlayView.swift; sourceTree = "<group>"; };
-		F67343881C6E6FC30005960C /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		F673438A1C6E81E20005960C /* GameLevels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameLevels.swift; sourceTree = "<group>"; };
 		F680761E1C6EAD4D0004E80B /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		F68076201C6EBCBB0004E80B /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -51,7 +49,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F67343891C6E6FC30005960C /* GameKit.framework in Frameworks */,
 				F680761F1C6EAD4D0004E80B /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -63,7 +60,6 @@
 			isa = PBXGroup;
 			children = (
 				F680761E1C6EAD4D0004E80B /* StoreKit.framework */,
-				F67343881C6E6FC30005960C /* GameKit.framework */,
 				F615E15B1C6B1BFC0095CD7F /* MapTiltMaze */,
 				F615E15A1C6B1BFC0095CD7F /* Products */,
 			);
