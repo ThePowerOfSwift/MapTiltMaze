@@ -41,6 +41,8 @@ class OverlayView: UIView {
     
     var records:[Int:String] = [Int:String]()
     
+    var lockImage:UIImageView!
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -268,23 +270,33 @@ class OverlayView: UIView {
         self.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)
         startButton.userInteractionEnabled = false
         
-        if purchaseButton != nil {
+        if purchaseButton != nil && lockImage != nil{
             purchaseButton.alpha = 1
+            lockImage.alpha = 1
             return
         }
+
+        let blockFrame = CGRectMake(frame.width / 3, frame.height / 3, frame.width / 3, frame.height / 3)
         
+        lockImage = UIImageView(image: UIImage(named: "lock"))
+        lockImage.frame = blockFrame
+        addSubview(lockImage)
+
         purchaseButton = UIButton()
-        purchaseButton.frame = CGRect(origin: CGPointMake(superview!.frame.width/2.0, superview!.frame.height/2.0), size: CGSize(width: 200, height: 100))
+        purchaseButton.frame = blockFrame
         purchaseButton.setTitle("Buy Map: $.99", forState: UIControlState.Normal)
         purchaseButton.addTarget(self, action: "purchase:", forControlEvents: UIControlEvents.TouchUpInside)
         self.addSubview(purchaseButton)
+        
+        
     }
     
     func removeAddLockedLevelViews(){
-        self.backgroundColor = UIColor.clearColor()
+        backgroundColor = UIColor.clearColor()
         startButton.userInteractionEnabled = true
-        if purchaseButton != nil {
-            self.purchaseButton.alpha = 0
+        if purchaseButton != nil && lockImage != nil {
+            purchaseButton.alpha = 0
+            lockImage.alpha = 0
         }
     }
     
