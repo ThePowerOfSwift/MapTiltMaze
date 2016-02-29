@@ -49,6 +49,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func loadNSUserDefaults(){
         let defaultsManager = UserDefaultsManager()
         defaultsManager.deleteLevel(levelNumber: 1)
+        let level1: [String:AnyObject] = ["levelNumber":1, "canPlay": true, "bestTime": 1000, "startLatitude": -40.0, "startLongitude": -110.0, "endLatitude": -41.0, "endLongitude": -111.0]
+        defaultsManager.createLevel(levelName: 1, level: level1)
     }
 }
 

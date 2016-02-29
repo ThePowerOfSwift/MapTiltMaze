@@ -44,7 +44,7 @@ class UserDefaultsManager: NSObject {
     func convertLevelNumberToLevelName(levelNumber:Int) -> String{
         return "level\(levelNumber)"
     }
-    
+
 }
 
 /*
